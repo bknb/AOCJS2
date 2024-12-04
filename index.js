@@ -2,8 +2,6 @@ import {execSync} from 'child_process';
 import * as prompt from './src/prompts.js';
 import fs from 'fs';
 
-const RECURSIVE = { recursive: true };
-
 startStep();
 
 function startStep() {
@@ -23,6 +21,7 @@ function decisionStep({action}) {
 }
 
 function createNewStep(answer) {
+  const RECURSIVE = { recursive: true };
   fs.mkdirSync(getPath(answer), RECURSIVE);
   fs.cpSync('./.solution_template', getPath(answer), RECURSIVE);
   solveOptionsStep(answer);
