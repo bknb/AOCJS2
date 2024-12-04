@@ -4,12 +4,22 @@ import fs from 'fs';
 
 const RECURSIVE = { recursive: true };
 
-prompt.intro().then(createStep);
+startStep();
 
-function createStep({action}) {
-  if (action === prompt.CREATE)
-    prompt.createNew().then(createNewStep);
-  else chooseSolutionStep();
+function startStep() {
+  prompt.intro().then(decisionStep);
+}
+
+function decisionStep({action}) {
+  switch(action) {
+    case prompt.CREATE:
+      prompt.createNew().then(createNewStep);
+      break;
+    case prompt.SOLVE:
+      chooseSolutionStep();
+      break;
+    default:
+  }
 }
 
 function createNewStep(answer) {
@@ -27,11 +37,13 @@ function solveOptionsStep(answer) {
 }
 
 function solveStep(answer) {
-  import(`${getPath(answer)}/solution.js`)
+  import(`${getPath(answer)}/solution.js?${Date.now()}`)
     .then(solution => {
       execute(solution, answer.options, getPath(answer));
-      prompt.rerun().then(({rerun})=>
-        rerun&&solveOptionsStep(answer))
+      prompt.rerun().then(({rerun}) => {
+        if (rerun) solveOptionsStep(answer);
+        else startStep();
+      });
     });
 }
 

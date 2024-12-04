@@ -10,7 +10,7 @@ export const part2 = (input) => {
   return 'Solution2';
 }
 
-export const init = (input) => {
+export const init = (data) => {
   // Write your code here
-  return input;
+  return data;
 }

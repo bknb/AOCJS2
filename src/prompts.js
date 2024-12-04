@@ -4,6 +4,7 @@ import { list, input, confirm, checkbox } from './options.js';
 
 export const CREATE = 'create';
 export const SOLVE = 'solve';
+export const END = 'end';
 export const DEBUG = 'debug';
 export const PART1 = 'part1';
 export const PART2 = 'part2';
@@ -15,6 +16,7 @@ export const intro = () => inquirer
       .message('What do you want to do?')
       .add('create a new solution', CREATE)
       .add('solve', SOLVE, fs.existsSync('./solutions'))
+      .add('end the programm', END)
       .default(SOLVE)
   ].map(x=>x()));
 
