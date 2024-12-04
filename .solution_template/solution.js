@@ -1,4 +1,6 @@
 import {log} from '#solver';
+import * as helper from '#helper';
+import * as parser from '#parser';
 
 export const part1 = (input) => {
   // Write your code here
