@@ -1,24 +1,20 @@
 import {rng, sumGrid, mapGrid, getEdges, getNext} from '#helper';
 import {linify} from '#parser';
 
-const word = 'XMAS'
+const word = 'XMAS';
 
-export const part1 = (input) => 
-  sumGrid(mapGrid(input, count1));
+const count = (n, fn) =>
+  (i,j,input) =>
+    input[i][j]-n?0:fn(i,j,input);
 
-export const part2 = (input) => 
-  sumGrid(mapGrid(input, count2));
+const count1 = 
+  count(0, (i,j,input) =>
+    rng(0,8).filter(k=>
+      check1(i,j,k,input)).length);
 
-function count1(i,j,input) {
-  if (input[i][j]) return 0;
-  return rng(0,8).filter(k=>
-    check1(i,j,k,input)).length;
-}
-
-function count2(i,j,input) {
-  if (input[i][j]-2) return 0;
-  return ~~check2(i,j,input);
-}
+const count2 = 
+  count(2, (i,j,input) =>
+    ~~check2(i,j,input));
 
 function check1(i,j,dir,input) {
   if (input[i][j] === word.length-1) return true;
@@ -37,6 +33,12 @@ function check2(i,j,input) {
         ? edges[0] !== edges[2]
         : edges[0] === edges[2]);
 }
+
+export const part1 = (input) => 
+  sumGrid(mapGrid(input, count1));
+
+export const part2 = (input) => 
+  sumGrid(mapGrid(input, count2));
 
 export const init = (data) => 
   linify(data)

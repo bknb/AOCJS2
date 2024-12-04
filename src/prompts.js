@@ -24,12 +24,10 @@ export const solve = () => inquirer
   .prompt([
     list('year')
       .message('Which year?')
-      .choices(getDirectories('./solutions')
-               .sort((a, b) => b - a)),
+      .choices(getAllYears),
     list('day')
       .message('Which day?')
-      .choices(({ year }) => getDirectories(`./solutions/${year}`)
-              .sort((a, b) => b - a))
+      .choices(getAllDaysForSelection)
     ].map(x=>x()));
 
 export const createNew = () => inquirer
@@ -44,42 +42,32 @@ export const createNew = () => inquirer
 
 export const rerun = () => inquirer
   .prompt([
-    {
-      type: "confirm",
-      name: "rerun",
-      message: "Want to rerun it"
-    }
-  ]);
+    confirm('rerun')
+      .message('Want to rerun it?')
+  ].map(x=>x()));
 
 export const solveOptions = (answer) => inquirer
   .prompt([
-    {
-      type: "checkbox",
-      name: "options",
-      message: "What do you want?",
-      askAnswered: true,
-      choices: [{
-        name: 'Test',
-        value: TESTD,
-        checked: true
-      }, {
-        name: 'Debug',
-        value: DEBUG,
-        checked: false
-      }, {
-        name: 'Part 1',
-        value: PART1,
-        checked: true
-      }, {
-        name: 'Part 2',
-        value: PART2,
-        checked: true
-      }]
-    },
-  ], answer);
+    checkbox('options')
+      .message('What do you want?')
+      .add('Test', TESTD)
+      .add('Debug', DEBUG, false)
+      .add('Part 1', PART1)
+      .add('Part 2', PART2)
+    ].map(x=>x()), answer);
 
 function getDirectories(path) {
   return fs.readdirSync(path, { withFileTypes: true })
     .filter((item) => item.isDirectory())
     .map((item) => +item.name);
+}
+
+function getAllYears() {
+  return getDirectories('./solutions')
+   .sort((a, b) => b - a);
+}
+
+function getAllDaysForSelection({year}) {
+  return getDirectories(`./solutions/${year}`)
+    .sort((a, b) => b - a);
 }

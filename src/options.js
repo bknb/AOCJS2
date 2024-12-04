@@ -24,7 +24,8 @@ export const list = (name) => {
 };
 
 export const input = (name) => {
-  const option = {type: 'input', name, message: 'Please input an option'};
+  const option = {type: 'input', name,
+                  message: 'Please input an option'};
   const result = () => option;
   result.message = (msg) => {
     option.message = msg;
@@ -49,5 +50,17 @@ export const confirm = (name) => {
 }
 
 export const checkbox = (name) => {
-  
+  const option = {type: 'checkbox', name, choices: [],
+                  message: 'Please select options',
+                  askAnswered: true};
+  const result = () => option;
+  result.message = (msg) => {
+    option.message = msg;
+    return result;
+  };
+  result.add = (name, value, checked = true) => {
+    option.choices.push({name, value, checked});
+    return result;
+  }
+  return result;
 };
