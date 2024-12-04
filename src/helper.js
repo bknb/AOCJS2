@@ -1,3 +1,12 @@
+export const rng = (n, m) =>
+  [...Array(m - n)].map((_, i) => i + n);
+
+export const count = (arr, f = x=>x) =>
+  arr.filter(f).length;
+
+export const allBut = (arr, i) =>
+  arr.filter((x,j)=>j!==i);
+
 export const sum = (arr) =>
   (typeof arr === 'object' ? arr : [...arguments])
     .reduce((a, c) => a + c, 0);

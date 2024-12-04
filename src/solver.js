@@ -10,12 +10,17 @@ const high = chalk.red.bold;
 const time1 = chalk.yellow;
 const time2 = chalk.magenta;
 
-export const execute = (solution, options, path) => {
+let [path, options] = process.argv.slice(2);
+options = options.split(',');
+import(`../${path}/solution.js`)
+  .then(handleSolution);
+
+function handleSolution(solution) {
   const { init } = solution;
   const useTestData = options.includes(TESTD);
-  
+
   if (useTestData) console.log(test('~~TestRun~~'));
-  
+
   debug = options.includes(DEBUG);
   const dataPath = `${path}/${useTestData?'test':'input'}.txt`;
 

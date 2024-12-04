@@ -1,4 +1,4 @@
-import {execute} from './src/solver.js';
+import {execSync} from 'child_process';
 import * as prompt from './src/prompts.js';
 import fs from 'fs';
 
@@ -37,14 +37,14 @@ function solveOptionsStep(answer) {
 }
 
 function solveStep(answer) {
-  import(`${getPath(answer)}/solution.js?${Date.now()}`)
-    .then(solution => {
-      execute(solution, answer.options, getPath(answer));
-      prompt.rerun().then(({rerun}) => {
-        if (rerun) solveOptionsStep(answer);
-        else startStep();
-      });
-    });
+  const opts = answer.options.join();
+  const path = getPath(answer);
+  const command = `node src/solver.js ${path} ${opts}`;
+  execSync(command, { stdio: 'inherit' });
+  prompt.rerun().then(({rerun}) => {
+    if (rerun) solveOptionsStep(answer);
+    else startStep();
+  });
 }
 
 function getPath({year, day}) {
