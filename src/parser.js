@@ -10,6 +10,9 @@ export const chunkify = (items, regex = /[-\w]+/g) =>
 export const test = (items, regex) =>
   items.filter((item) => regex.test(item));
 
+export const matcher = (regex, n) =>
+  (item => item.match(regex).slice(1,1+n));
+
 export const seperate = (input, seperator = /^\s*$/) =>
   linify(input).reduce(([[...a],...r],c)=>
     seperator.test(c)?[[],a,...r]:[[...a,c],...r],[[]])
