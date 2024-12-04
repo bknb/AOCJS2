@@ -24,8 +24,10 @@ function handleSolution(solution) {
   debug = options.includes(DEBUG);
   const dataPath = `${path}/${useTestData?'test':'input'}.txt`;
 
-  const [data, loadTime] = timedExecution(fs.readFileSync, dataPath, 'utf8');
-  const [input, prepTime] = timedExecution(init, data);
+  const [data, loadTime] =
+    timedExecution(fs.readFileSync, dataPath, 'utf8');
+  const [input, prepTime] =
+    timedExecution(init, data);
 
   log(chalk.blue('Input:'), input);
   console.log(time1(`loaded in ${loadTime}ms`));
@@ -34,7 +36,8 @@ function handleSolution(solution) {
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {
       console.log(`-------\n${main(`Part ${part}:`)}\n-------`);
-      const [output, time] = timedExecution(solution[`part${part}`], input);
+      const [output, time] =
+        timedExecution(solution[`part${part}`], input);
       console.log(high('Solution: ') + output);
       console.log(time2(`in ${time}ms\n`));
     });
@@ -51,3 +54,5 @@ export const log = (...text) => {
   if(debug) console.log(...text);
   return text[0];
 }
+
+export const isDebug = () => debug;
