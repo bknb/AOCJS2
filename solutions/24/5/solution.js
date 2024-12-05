@@ -1,9 +1,7 @@
-import {log} from '#solver';
-import * as helper from '#helper';
 import {seperate, chunkify, numberfy} from '#parser';
 
 export const part1 = ([rules,pn]) =>
-  log(pn.filter(correctOrder(rules))
+  pn.filter(correctOrder(rules)
     .map(r=>r[Math.floor(r.length/2)]))
     .reduce((a,c)=>a+c);
 
