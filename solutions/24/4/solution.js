@@ -19,14 +19,16 @@ const count1 =
     rng(0,8).filter(k=>
       check1(i,j,k,input)).length);
 
+const checkEdges = edges => 
+  edges.every(x=>!isNaN(x)&&x%2)
+  && edges[0] !== edges[3] 
+  && (edges[0] === edges[1] 
+      ? edges[0] !== edges[2]
+      : edges[0] === edges[2]);
+
 const check2 = (i,j,input) =>
   (i && i<input.length-1) 
-    && (edges => edges.every(x=>!isNaN(x)&&x%2)
-      && edges[0] !== edges[3] 
-      && (edges[0] === edges[1] 
-          ? edges[0] !== edges[2]
-          : edges[0] === edges[2]))
-    (getEdges(i,j,input));
+    && checkEdges(getEdges(i,j,input));
 
 const count2 = 
   count(2, (i,j,input) =>
