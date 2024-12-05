@@ -27,15 +27,15 @@ function handleSolution(solution) {
     timedExecution(init, data);
 
   log(inputC('Input:'), input);
-  console.log(time1C(`loaded in ${loadTime}ms`));
-  console.log(time1C(`prepared in ${prepTime}ms\n`));
+  log(time1C(`loaded in ${loadTime}ms`));
+  log(time1C(`prepared in ${prepTime}ms`));
 
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {
       const [output, time] =
         timedExecution(solution[`part${part}`], input);
-      console.log(highC(`Solution${part}: `) + output);
-      console.log(time2C(`in ${time}ms\n`));
+      console.log(highC(`\nSolution${part}: `) + output);
+      console.log(time2C(`in ${time}ms`));
     });
 }
 

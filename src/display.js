@@ -6,7 +6,7 @@ export const mainC = chalk.blue.bold;
 export const highC = chalk.red.bold;
 export const time1C = chalk.yellow;
 export const time2C = chalk.magenta;
-export const inputC = chalk.rgb(10,230,10);
+export const inputC = chalk.rgb(20,180,20);
 
 export const log = (...text) =>
   (isDebug() && console.log(...text)) || text[0];
