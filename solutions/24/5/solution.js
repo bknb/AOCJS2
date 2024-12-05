@@ -6,12 +6,13 @@ const sumMids = (input) =>
 
 const checkLeft = (rules,p,pn,i) => 
   rules.filter(([l])=>l===p)
-  .every(([,r])=>(j => j<0 || j>i)
-    (pn.findIndex(p=>p===r)));
+    .every(([,r])=>(j => j<0 || j>i)
+      (pn.findIndex(p=>p===r)));
 
 const checkRight = (rules,p,pn,i) => 
   rules.filter(([,r])=>r===p)
-  .every(([l])=>pn.findIndex(p=>p===l) < i);
+    .every(([l])=>
+      pn.findIndex(p=>p===l) < i);
 
 const correctOrder = (rules) =>
   (pn) => pn.every((p,i)=>
