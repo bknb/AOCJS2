@@ -16,8 +16,8 @@ const checkLeft = (rules,p,pn,i) =>
   .every(([l,r])=>existsOrHigher(pn,r,i));
 
 const checkRight = (rules,p,pn,i) => 
-    rules.filter(([l,r])=>r===p)
-    .every(([l])=>pn.findIndex(p=>p===l) < i);
+  rules.filter(([l,r])=>r===p)
+  .every(([l])=>pn.findIndex(p=>p===l) < i);
 
 function correctOrder(rules) {
   return (pn) => pn.every((p,i)=>
