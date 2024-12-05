@@ -1,8 +1,11 @@
-import {log, testC, mainC, highC, time1C, time2C, inputC} from './display.js';
+import {log, clear, debug,
+        testC, mainC, highC,
+        time1C, time2C, inputC} 
+  from './display.js';
 import {TESTD, DEBUG} from './prompts.js';
 import fs from 'fs';
 
-let debug = false;
+let debugEnabled = false;
 
 let [path, options] = process.argv.slice(2);
 options = options.split(',');
@@ -14,29 +17,30 @@ function handleSolution(solution) {
   const [year, day] = path.match(/\d+/g);
   const isTest = options.includes(TESTD);
 
+  clear();
   let header = mainC(`Solutions(${year}-${day})`);
   if (isTest) header+=testC(' ~~Test');
-  console.log(header);
+  log(header);
 
-  debug = options.includes(DEBUG);
+  debugEnabled = options.includes(DEBUG);
   const dataPath = `${path}/${isTest?'test':'input'}.txt`;
 
   const [data, loadTime] =
     timedExecution(fs.readFileSync, dataPath, 'utf8');
   const [input, prepTime] =
     timedExecution(init, data);
-
-  log(inputC('Input:'), input);
-  log(time1C(`loaded in ${loadTime}ms`));
-  log(time1C(`prepared in ${prepTime}ms`));
+  debug(inputC('Input:'), input);
+  debug(time1C(`loaded in ${loadTime}ms`));
+  debug(time1C(`prepared in ${prepTime}ms`));
 
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {
       const [output, time] =
         timedExecution(solution[`part${part}`], input);
-      console.log(highC(`\nSolution${part}: `) + output);
-      console.log(time2C(`in ${time}ms`));
+      log(highC(`\nSolution${part}: `) + output);
+      log(time2C(`in ${time}ms`));
     });
+  log();
 }
 
 function timedExecution(fn, ...args) {
@@ -46,4 +50,4 @@ function timedExecution(fn, ...args) {
   return [result, (end-start).toFixed(2)];
 }
 
-export const isDebug = () => debug;
+export const isDebug = () => debugEnabled;
