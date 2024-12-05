@@ -1,15 +1,15 @@
 import {seperate, chunkify, numberfy} from '#parser';
 
-export const part1 = ([rules,pn]) =>
-  pn.filter(correctOrder(rules))
-    .map(r=>r[Math.floor(r.length/2)])
+const sumMids = (input) => 
+  input.map(r=>r[~~(r.length/2)])
     .reduce((a,c)=>a+c);
 
+export const part1 = ([rules,pn]) =>
+  sumMids(pn.filter(correctOrder(rules)));
+
 export const part2 = ([rules,pn]) => 
-  pn.filter(p=>!correctOrder(rules)(p))
-    .map(bringInCorrectOrder(rules))
-    .map(r=>r[Math.floor(r.length/2)])
-    .reduce((a,c)=>a+c);
+  sumMids(pn.filter(p=>!correctOrder(rules)(p))
+    .map(bringInCorrectOrder(rules)));
 
 const checkLeft = (rules,p,pn,i) => 
   rules.filter(([l])=>l===p)
