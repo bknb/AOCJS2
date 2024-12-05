@@ -22,7 +22,8 @@ const checkRight = (rules,p,pn,i) =>
 
 function correctOrder(rules) {
   return (pn) => pn.every((p,i)=>
-    checkLeft(rules,p,pn,i)&&checkRight(rules,p,pn,i));
+    checkLeft(rules,p,pn,i)
+    && checkRight(rules,p,pn,i));
 }
 
 function bringInCorrectOrder(rules) {
