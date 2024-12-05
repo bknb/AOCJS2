@@ -11,6 +11,15 @@ export const sum = (arr) =>
   (typeof arr === 'object' ? arr : [...arguments])
     .reduce((a, c) => a + c, 0);
 
+export const allPairs = (arr) =>
+  arr.map((x,i)=>arr.slice(i+1).map(y=>[x,y])).flat();
+
+export const allPerms = (arr, n) =>
+  n==2?allPairs(arr)
+  :arr.map((x,i)=>
+    allPerms(arr.slice(i+1),n-1)
+    .map(y=>[x,...y])).flat();
+
 export const insert = (arr, n, i) =>
   [...arr.slice(0,i),n,...arr.slice(i)];
 
