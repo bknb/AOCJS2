@@ -11,12 +11,15 @@ import(`../${path}/solution.js`)
 
 function handleSolution(solution) {
   const { init } = solution;
-  const useTestData = options.includes(TESTD);
+  const [year, day] = path.match(/\d+/g);
+  const isTest = options.includes(TESTD);
 
-  if (useTestData) console.log(testC('~~TestRun~~'));
+  let header = mainC(`Solutions(${year}-${day})`);
+  if (isTest) header+=testC(' ~~Test');
+  console.log(header);
 
   debug = options.includes(DEBUG);
-  const dataPath = `${path}/${useTestData?'test':'input'}.txt`;
+  const dataPath = `${path}/${isTest?'test':'input'}.txt`;
 
   const [data, loadTime] =
     timedExecution(fs.readFileSync, dataPath, 'utf8');
@@ -29,10 +32,9 @@ function handleSolution(solution) {
 
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {
-      console.log(`╭╴╺━━━╸╶╮\n│${mainC(`Part ${part}:`)}│\n╰╴╺━━━╸╶╯`);
       const [output, time] =
         timedExecution(solution[`part${part}`], input);
-      console.log(highC('Solution: ') + output);
+      console.log(highC(`Solution${part}: `) + output);
       console.log(time2C(`in ${time}ms\n`));
     });
 }
