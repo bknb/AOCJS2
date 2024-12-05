@@ -1,6 +1,15 @@
 import {count, allBut} from '#helper';
 import {linify, chunkify, numberfy} from '#parser';
 
+const isSafe = (row) =>
+  row.slice(1)
+    .map((x,i)=>[row[i]>x,Math.abs(row[i]-x)])
+    .every(([inc,delta],i,[[first]])=>
+      inc===first&&delta>0&&delta<4);
+
+const enrichSubs = (row) =>
+  [row,...row.map((x,i,arr)=>allBut(arr,i))];
+
 export const part1 = (input) => 
   count(input, isSafe);
 
@@ -10,14 +19,3 @@ export const part2 = (input) =>
 
 export const init = (data) =>
   numberfy(chunkify(linify(data)));
-
-function isSafe(row) {
-  return row.slice(1)
-    .map((x,i)=>[row[i]>x,Math.abs(row[i]-x)])
-    .every(([inc,delta],i,[[first]])=>
-      inc===first&&delta>0&&delta<4);
-}
-
-function enrichSubs(row) {
-  return [row,...row.map((x,i,arr)=>allBut(arr,i))];
-}

@@ -1,3 +1,5 @@
+import { arrayBuffer } from "stream/consumers";
+
 export const rng = (n, m) =>
   [...Array(m - n)].map((_, i) => i + n);
 
@@ -11,8 +13,11 @@ export const sum = (arr) =>
   (typeof arr === 'object' ? arr : [...arguments])
     .reduce((a, c) => a + c, 0);
 
+export const insert = (arr, n, i) =>
+  [...arr.slice(0,i),n,...arr.slice(i)];
+
 export const insertSorted = (arr, n) =>
-  arr.splice(getSortedIndex(arr,n), 0, n);
+  insert(arr, n, getSortedIndex(arr,n));
 
 function getSortedIndex(arr, n) {
   let low = 0,
