@@ -33,7 +33,8 @@ function existsOrHigher(pn,r,i) {
 
 function bringInCorrectOrder(rules) {
   return (pn) => pn.sort((a,b)=>
-    rules.find(([l,r])=>l===b&&r===a)?1:(rules.find(([l,r])=>l===a&&r===b)?-1:0));
+    rules.find(([l,r])=>l===b&&r===a)?1
+    :(rules.find(([l,r])=>l===a&&r===b)?-1:0));
 }
 
 export const init = (data) => {
