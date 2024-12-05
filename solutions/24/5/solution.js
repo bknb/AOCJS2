@@ -32,10 +32,7 @@ function bringInCorrectOrder(rules) {
     :(rules.find(([l,r])=>l===a&&r===b)?-1:0));
 }
 
-export const init = (data) => {
-  const [rules,pn] = seperate(data);
-  return [
-    chunkify(rules).map(numberfy),
-    chunkify(pn).map(numberfy)
-  ];
-}
+export const init = (data) => 
+  seperate(data)
+    .map(s=>chunkify(s)
+      .map(numberfy));
