@@ -1,3 +1,5 @@
+import {rng} from './array';
+
 export const getEdges = (i,j,input) =>
   [0,1].map(x=>[0,1].map(y=>
     input[i+(x?1:-1)][j+(y?1:-1)])).flat();
@@ -21,3 +23,6 @@ export const getNext = (c,dir) => {
   }
   return c;
 };
+
+export const allNext = (c) =>
+  rng(0,8).map(x=>getNext(c,x));
