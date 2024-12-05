@@ -14,6 +14,9 @@ export const debug = (...text) =>
 export const condLog = (condition, ...text) =>
   (condition && console.log(...text)) || text[0];
 
+export const cLog = (r,g,b) =>
+  text=>console.log(chalk.rgb(r,g,b)(text))||text;
+
 export const log = (...text) =>
   console.log(...text) || text[0];
 
