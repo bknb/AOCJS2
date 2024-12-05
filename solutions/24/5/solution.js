@@ -13,7 +13,8 @@ export const part2 = ([rules,pn]) =>
 
 const checkLeft = (rules,p,pn,i) => 
   rules.filter(([l])=>l===p)
-  .every(([,r])=>existsOrHigher(pn,r,i));
+  .every(([,r])=>(j => j===-1 || j>i)
+    (pn.findIndex(p=>p===r)));
 
 const checkRight = (rules,p,pn,i) => 
   rules.filter(([,r])=>r===p)
@@ -22,11 +23,6 @@ const checkRight = (rules,p,pn,i) =>
 function correctOrder(rules) {
   return (pn) => pn.every((p,i)=>
     checkLeft(rules,p,pn,i)&&checkRight(rules,p,pn,i));
-}
-
-function existsOrHigher(pn,r,i) {
-  const j = pn.findIndex(p=>p===r);
-  return j===-1 || j>i;
 }
 
 function bringInCorrectOrder(rules) {
