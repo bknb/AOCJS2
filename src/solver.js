@@ -51,9 +51,10 @@ function timedExecution(fn, ...args) {
   return [result, (end-start).toFixed(2)];
 }
 
-export const log = (...text) => {
-  if(debug) console.log(...text);
-  return text[0];
-}
+export const log = (...text) =>
+  (debug && console.log(...text)) || text[0];
+
+export const condLog = (condition, ...text) =>
+  (debug && condition && console.log(...text)) || text[0];
 
 export const isDebug = () => debug;

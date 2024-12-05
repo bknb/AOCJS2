@@ -1,4 +1,4 @@
-import {rng} from './array';
+import {rng} from './array.js';
 
 export const getEdges = (i,j,input) =>
   [0,1].map(x=>[0,1].map(y=>
