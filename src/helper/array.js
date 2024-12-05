@@ -16,9 +16,13 @@ export const insert = (arr, n, i) =>
 
 const getSortedIndex = (arr, n) =>
   [...arr].reduce(([low,high],c,i,a)=>
-    low>=high?a.splice(1)&&[low]:((mid)=>
-      arr[mid]<n?[mid+1,high]:[low,mid])
-    ((low + high) >>> 1),[0,arr.length])[0];
+    low>=high
+    ? a.splice(1)&&[low]
+    : ((mid)=>arr[mid]<n
+      ?[mid+1,high]
+      :[low,mid])
+    ((low + high) >>> 1),
+  [0,arr.length])[0];
 
 export const insertSorted = (arr, n) =>
   insert(arr, n, getSortedIndex(arr,n));
