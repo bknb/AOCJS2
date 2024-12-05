@@ -1,8 +1,8 @@
 import {seperate, chunkify, numberfy} from '#parser';
 
 export const part1 = ([rules,pn]) =>
-  pn.filter(correctOrder(rules)
-    .map(r=>r[Math.floor(r.length/2)]))
+  pn.filter(correctOrder(rules))
+    .map(r=>r[Math.floor(r.length/2)])
     .reduce((a,c)=>a+c);
 
 export const part2 = ([rules,pn]) => 
@@ -13,10 +13,10 @@ export const part2 = ([rules,pn]) =>
 
 const checkLeft = (rules,p,pn,i) => 
   rules.filter(([l])=>l===p)
-  .every(([l,r])=>existsOrHigher(pn,r,i));
+  .every(([,r])=>existsOrHigher(pn,r,i));
 
 const checkRight = (rules,p,pn,i) => 
-  rules.filter(([l,r])=>r===p)
+  rules.filter(([,r])=>r===p)
   .every(([l])=>pn.findIndex(p=>p===l) < i);
 
 function correctOrder(rules) {
