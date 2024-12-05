@@ -1,7 +1,7 @@
 import {seperate, chunkify, numberfy} from '#parser';
 
 const sumMids = (input) => 
-  input.map(r=>r[~~(r.length/2)])
+  input.map(r=>r[(r.length/2)|0])
     .reduce((a,c)=>a+c);
 
 export const part1 = ([rules,pn]) =>
@@ -13,7 +13,7 @@ export const part2 = ([rules,pn]) =>
 
 const checkLeft = (rules,p,pn,i) => 
   rules.filter(([l])=>l===p)
-  .every(([,r])=>(j => j===-1 || j>i)
+  .every(([,r])=>(j => j<0 || j>i)
     (pn.findIndex(p=>p===r)));
 
 const checkRight = (rules,p,pn,i) => 
