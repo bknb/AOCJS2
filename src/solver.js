@@ -1,15 +1,8 @@
+import {log, testC, mainC, highC, time1C, time2C, inputC} from './display.js';
 import {TESTD, DEBUG} from './prompts.js';
-import chalk from 'chalk';
 import fs from 'fs';
 
 let debug = false;
-
-const testC = chalk.italic.bold;
-const mainC = chalk.blue.bold;
-const highC = chalk.red.bold;
-const time1C = chalk.yellow;
-const time2C = chalk.magenta;
-const inputC = chalk.rgb(10,20,230);
 
 let [path, options] = process.argv.slice(2);
 options = options.split(',');
@@ -50,11 +43,5 @@ function timedExecution(fn, ...args) {
   const end = performance.now();
   return [result, (end-start).toFixed(2)];
 }
-
-export const log = (...text) =>
-  (debug && console.log(...text)) || text[0];
-
-export const condLog = (condition, ...text) =>
-  (debug && condition && console.log(...text)) || text[0];
 
 export const isDebug = () => debug;

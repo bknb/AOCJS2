@@ -8,7 +8,8 @@
   "imports": {
     "#solver": "./src/solver.js",
     "#parser": "./src/parser.js",
-    "#helper": "./src/helper.js"
+    "#helper": "./src/helper.js",
+    "#display": "./src/display.js"
   },
   "dependencies": {
     "@types/node": "^18.0.6",
