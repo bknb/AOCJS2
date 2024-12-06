@@ -14,6 +14,9 @@ export const sumGrid = (grid) =>
     (a+c.reduce((a,c)=>
       (a+c),0)),0);
 
+export const oob = (i,j,input) =>
+  i<0||j<0||i>=input.length||j>=input[0].length;
+
 export const getNext = (c,dir) => {
   switch(dir) {
     case 0: c[0]--; case 1: c[1]++; break;
