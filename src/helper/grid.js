@@ -24,6 +24,9 @@ export const altGrid = (grid, x, y, v, c) =>
 export const zeroGrid = (grid) =>
   grid.map(x=>x.map(y=>0));
 
+export const copyGrid = (grid) =>
+  grid.map(x=>x.slice());
+
 export const getNext = (c,dir) => {
   switch(dir) {
     case 0: c[1]--; case 1: c[0]--; break;
