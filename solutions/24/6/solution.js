@@ -1,4 +1,4 @@
-import {logGrid, log} from '#display';
+import {logGrid, log, oLog} from '#display';
 import {sumGrid, oob} from '#helper';
 import chalk from 'chalk';
 
@@ -65,7 +65,24 @@ const solveIt2 = (s, obs, vis) => {
     if (obs[nx][ny]) {
       vis[s[0]][s[1]]=5;
       s=turnR(s);
-      markToN(s,obs,vis);
+    }
+    else {
+      s[0]=nx;s[1]=ny;
+      if(isRightLoop(s,obs,vis)) loops++;
+      vis[nx][ny]=s[2]+1;
+    }
+  }
+}
+  
+const solveIt2_old = (s, obs, vis) => {
+  let loops = 0;
+  while(true) {
+    let [nx,ny] = next(s);
+    if (oob(nx,ny,obs)) return loops;
+    if (obs[nx][ny]) {
+      vis[s[0]][s[1]]=5;
+      s=turnR(s);
+      markOppo(s,obs,vis);
     }
     else {
       s[0]=nx;s[1]=ny;
@@ -77,7 +94,7 @@ const solveIt2 = (s, obs, vis) => {
   }
 }
 
-export const markToN = ([x,y,d], obs, vis) => {
+const markOppo = ([x,y,d], obs, vis) => {
   const od = oppo(d);
   while(!oob(x,y,obs)&&!obs[x][y]) {
     if(!vis[x][y]) vis[x][y]=d+1;
@@ -85,15 +102,56 @@ export const markToN = ([x,y,d], obs, vis) => {
   }
 }
 
+const isRightLoop = ([x,y,d], obs, vis) => {
+  let rd = (d+1)%2;
+  while(!oob(log(x,y),y,obs)) {
+    if(obs[x][y]) {
+      [x,y] = next([x,y,oppo(rd)]);
+      rd = (rd+1)%2;
+    }
+    //oLog({x,y,d,visij:vis[x][y]})
+    else if(vis[x][y]-1==rd) return true;
+    [x,y] = next([x,y,rd]);
+  }
+  return false;
+}
+
+const isLoop = (s, obs, vis) => {
+  while(true) {
+    let [nx,ny] = next(s);
+    if (oob(nx,ny,obs)) return false;
+    if (obs[nx][ny]) s=turnR(s);
+    else {
+      s[0]=nx;s[1]=ny;
+      if(vis[nx][ny]==s[2]+1) return true;
+      vis[nx][ny]=s[2]+1;
+    }
+  }
+}
+
+export const part2_old = (input) => {
+  let s = getStart(input);
+  const obs = input.map(r=>r.map(c=>c=='#'));
+  const vis = input.map(r=>r.map(c=>/[\^>v<]/.test(c)?s[2]+1:0));
+  const sol = solveIt2(s,obs,vis,vis);
+  logGrid(vis, printMap)
+  return sol;
+}
+
 export const part2 = (input) => {
   let s = getStart(input);
   const obs = input.map(r=>r.map(c=>c=='#'));
   const vis = input.map(r=>r.map(c=>/[\^>v<]/.test(c)?s[2]+1:0));
-  markToN(s,obs,vis);
-  const sol = solveIt2(s,obs,vis,vis);
-  logGrid(vis, printMap)
-  //logGrid(vis2,'.|-|-+')
-  return sol;
+  let loops = 0;
+  for(let i=obs.length;i-->0;)
+    for(let j=obs[i].length;j-->0;)
+      if(!obs[i][j]) {
+        const obsn = obs.map(r=>[...r]);
+        obsn[i][j]=true;
+        loops+=isLoop([...s],obsn,vis.map(r=>[...r]));
+      }
+
+  return loops;
 }
 
 export const init = (data) =>

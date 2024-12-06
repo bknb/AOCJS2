@@ -27,4 +27,10 @@ export const logGrid = (grid, map='.#') =>
   console.log(grid.map(x=>x.map(x=>map[~~x]||'#')
     .join('')).join('\n')) || grid;
 
+export const oLog = (obj) => 
+  console.log(
+    Object.entries(obj)
+    .reduce((a,[k,v])=>
+      a+k+':'+v+' ',''));
+
 export const clear = () => console.clear();
