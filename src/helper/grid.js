@@ -1,3 +1,4 @@
+import { join } from 'path';
 import {rng} from './array.js';
 
 export const getEdges = (i,j,input) =>
@@ -7,25 +8,31 @@ export const getEdges = (i,j,input) =>
 export const mapGrid = (input, func) =>
   input.map((x,i)=>
     x.map((y,j)=>
-      func(i,j,input)));
+      func(y,i,j,input)));
 
 export const sumGrid = (grid) =>
   grid.reduce((a,c)=>
     (a+c.reduce((a,c)=>
       (a+c),0)),0);
 
-export const oob = (i,j,input) =>
-  i<0||j<0||i>=input.length||j>=input[0].length;
+export const oob = (i,j,grid) =>
+  grid[i]?.[j]===undefined;
+
+export const altGrid = (grid, x, y, v) =>
+  (grid=>grid[x][y]=v&&grid)(grid.map(x=>[...x]));
+
+export const zeroGrid = (grid) =>
+  grid.map(x=>x.map(y=>0));
 
 export const getNext = (c,dir) => {
   switch(dir) {
-    case 0: c[0]--; case 1: c[1]++; break;
-    case 2: c[1]++; case 3: c[0]++; break;
-    case 4: c[0]++; case 5: c[1]--; break;
-    case 6: c[1]--; case 7: c[0]--; break;
+    case 0: c[1]--; case 1: c[0]--; break;
+    case 2: c[0]--; case 3: c[1]++; break;
+    case 4: c[1]++; case 5: c[0]++; break;
+    case 6: c[0]++; case 7: c[1]--; break;
   }
   return c;
 };
 
 export const allNext = (c) =>
-  rng(0,8).map(x=>getNext(c,x));
+  rng(0,8).map(x=>getNext([...c],x));
