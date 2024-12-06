@@ -1,4 +1,3 @@
-import { join } from 'path';
 import {rng} from './array.js';
 
 export const getEdges = (i,j,input) =>
@@ -18,8 +17,9 @@ export const sumGrid = (grid) =>
 export const oob = (i,j,grid) =>
   grid[i]?.[j]===undefined;
 
-export const altGrid = (grid, x, y, v) =>
-  (grid=>grid[x][y]=v&&grid)(grid.map(x=>[...x]));
+export const altGrid = (grid, x, y, v, c) =>
+  (grid=>grid[x][y]=v&&grid)
+  (c?grid.map(x=>x.slice()):grid);
 
 export const zeroGrid = (grid) =>
   grid.map(x=>x.map(y=>0));
@@ -35,4 +35,4 @@ export const getNext = (c,dir) => {
 };
 
 export const allNext = (c) =>
-  rng(0,8).map(x=>getNext([...c],x));
+  rng(0,8).map(x=>getNext(c.slice(),x));

@@ -1,32 +1,22 @@
-import {sumGrid, oob, mapGrid, allNext, zeroGrid, altGrid} from '#helper';
+import {
+  sumGrid, oob, mapGrid,
+  allNext, zeroGrid, altGrid} from '#helper';
 
 const dirMap = '^>v<';
 const dirD = allNext([0,0])
   .filter((x,i)=>i%2);
 
-const getStart = (input) => {
-  for(let i=input.length;i-->0;)
-    for(let j=input[i].length;j-->0;)
-      if(/[\^>v<]/.test(input[i][j]))
-        return [i,j,dirMap.indexOf(input[i][j])];
-}
+const getStart = (input) => 
+  input.reduce((a,r,i)=>
+    a||r.slice().reduce((b,c,j,arr)=>
+      (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
+      (dirMap.indexOf(c)),false),false);
 
 const next = ([x,y,d]) =>
   (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
 
 const turnR = ([x,y,d]) =>
   [x,y,(d+1)%4];
-
-const visit = (vis, x, y) =>
-  vis[x][y]=true&&vis;
-
-const solve = (s, obs, vis) =>
-  (([nx,ny])=>
-    (oob(nx,ny,obs)?vis
-    :(obs[nx][ny]
-      ?solve(turnR(s),obs,vis)
-      :solve([nx,ny,s[2]],obs,visit(vis,nx,ny)))))
-    (next(s))
 
 const solveIt1 = (s, obs, vis) => {
   while(true) {
@@ -66,11 +56,10 @@ export const part2 = ([s,obs]) => {
   for(let i=obs.length;i-->0;)
     for(let j=obs[i].length;j-->0;)
       if(!obs[i][j]) {
-        const obsn = obs.map(r=>[...r]);
+        const obsn = obs.map(r=>r.slice());
         obsn[i][j]=true;
-        loops+=isLoop([...s],obsn,vis.map(r=>[...r]));
+        loops+=isLoop([...s],obsn,vis.map(r=>r.slice()));
       }
-
   return loops;
 }
 

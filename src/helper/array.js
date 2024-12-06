@@ -24,7 +24,7 @@ export const insert = (arr, n, i) =>
   [...arr.slice(0,i),n,...arr.slice(i)];
 
 const getSortedIndex = (arr, n) =>
-  [...arr].reduce(([low,high],c,i,a)=>
+  arr.slice().reduce(([low,high],c,i,a)=>
     low>=high
     ? a.splice(1)&&[low]
     : ((mid)=>arr[mid]<n
