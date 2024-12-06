@@ -23,8 +23,8 @@ export const log = (...text) =>
 export const error = (...text) =>
   console.error(...text) || text[0];
 
-export const logGrid = (grid) =>
-  console.log(grid.map(x=>x.map(x=>x?'#':'.')
+export const logGrid = (grid, map='.#') =>
+  console.log(grid.map(x=>x.map(x=>map[~~x]||'#')
     .join('')).join('\n')) || grid;
 
 export const clear = () => console.clear();
