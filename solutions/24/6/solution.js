@@ -7,12 +7,12 @@ const dirD = allNext([0,0])
   .filter((x,i)=>i%2);
 
 export const part1 = ([s,obs]) => 
-  sumGrid(mapGrid(solve(
+  sumGrid(mapGrid(getAllVis(
     s,getVis(s,obs),obs),c=>!!c));
 
 export const part2 = ([s,obs]) =>
   sumGrid(mapGrid(obs,(c,i,j)=>
-    !c && isLoop(
+    !c && !getAllVis(
       s.slice(),getVis(s,obs),
       altGrid(obs,i,j,true,true))));
 
@@ -22,26 +22,14 @@ export const init = (data) =>
     grid.map(r=>r.map(c=>c=='#'))
   ])(data.split('\n').map(x=>x.split('')));
 
-const solve = (s, vis, obs) => {
+const getAllVis = (s, vis, obs) => {
   while(true) {
     let [nx,ny] = next(s);
     if (oob(nx,ny,obs)) return vis;
     if (obs[nx][ny]) s=turnR(s);
     else {
-      s[0]=nx;s[1]=ny;
-      vis[nx][ny]=s[2]+1;
-    }
-  }
-}
-
-const isLoop = (s, vis, obs) => {
-  while(true) {
-    let [nx,ny] = next(s);
-    if (oob(nx,ny,obs)) return false;
-    if (obs[nx][ny]) s=turnR(s);
-    else {
       s=move(s,nx,ny);
-      if(vis[nx][ny]==s[2]+1) return true;
+      if(vis[nx][ny]==s[2]+1) return false;
       vis[nx][ny]=s[2]+1;
     }
   }
