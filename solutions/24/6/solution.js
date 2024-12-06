@@ -20,7 +20,7 @@ const visit = (vis, x, y) =>
 
 const solve = (s, obs, vis) =>
   (([nx,ny])=>
-    (oob(obs,nx,ny)?vis
+    (oob(nx,ny,obs)?vis
     :(obs[nx][ny]
       ?solve(turnR(s),obs,vis)
       :solve([nx,ny,s[2]],obs,visit(vis,nx,ny)))))
@@ -29,7 +29,7 @@ const solve = (s, obs, vis) =>
 const solveIt1 = (s, obs, vis) => {
   while(true) {
     let [nx,ny] = next(s);
-    if (oob(obs,nx,ny)) return vis;
+    if (oob(nx,ny,obs)) return vis;
     if (obs[nx][ny]) s=turnR(s);
     else {
       s[0]=nx;s[1]=ny;
