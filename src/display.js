@@ -1,4 +1,5 @@
 import {isDebug} from './solver.js';
+import {HSV2RGB, shiftHSV} from './helper.js';
 import chalk from 'chalk';
 
 export const testC = chalk.italic.bold;
@@ -8,37 +9,12 @@ export const time1C = chalk.yellow;
 export const time2C = chalk.magenta;
 export const inputC = chalk.rgb(20,180,20);
 
-const hsv2rgb = ([h,s,v]) => {
-  let r, g, b;
-  const j = h / 60;
-  const i = j|0;
-  const f = j - i;
-  const p = v * (1 - s);
-  const q = v * (1 - f * s);
-  const t = v * (1 - (1 - f) * s);
-  switch (i % 6) {
-    case 0: r = v, g = t, b = p; break;
-    case 1: r = q, g = v, b = p; break;
-    case 2: r = p, g = v, b = t; break;
-    case 3: r = p, g = q, b = v; break;
-    case 4: r = t, g = p, b = v; break;
-    case 5: r = v, g = p, b = q; break;
-  }
-  return [
-    Math.round(r * 255),
-    Math.round(g * 255),
-    Math.round(b * 255)
-  ];
-};
-
-const shift = ([h,s,v],shift)=>[(h+shift)%360,s,v];
-
 export const rainbow = (step)=> (str) => {
   let result = '';
-  let color = shift([0,0.8,0.8],20);
+  let color = shiftHSV([0,0.8,0.8],20);
   for (let i = 0; i < str.length; i++)
     result+=chalk.rgb(
-      ...hsv2rgb(color = shift(color,step)))(str[i]);
+      ...HSV2RGB(color = shiftHSV(color,step)))(str[i]);
   return result;
 }
   

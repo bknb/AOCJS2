@@ -49,7 +49,5 @@ const getVis = (s, obs) =>
 const next = ([x,y,d]) =>
   (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
 
-const turnR = ([x,y,d]) =>
-  [x,y,(d+1)%4];
-
+const turnR = ([x,y,d],c=1) => [x,y,(d+c)%4];
 const move = ([,,d],x,y) => [x,y,d];
