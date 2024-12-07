@@ -9,6 +9,7 @@ export const DEBUG = 'debug';
 export const PART1 = 'part1';
 export const PART2 = 'part2';
 export const TESTD = 'testD';
+export const VERBOSE = 'verbose';
 
 export const intro = () => inquirer
   .prompt([
@@ -54,6 +55,7 @@ export const solveOptions = (answer) => inquirer
       .add('Debug', DEBUG, false)
       .add('Part 1', PART1)
       .add('Part 2', PART2)
+      .add('verbose Errors', VERBOSE, false)
     ].map(x=>x()), answer);
 
 function getDirectories(path) {

@@ -2,11 +2,13 @@ import {log, clear, debug,
         testC, mainC, highC,
         time1C, time2C, inputC} 
   from './display.js';
-import {TESTD, DEBUG} from './prompts.js';
+import {TESTD, DEBUG, VERBOSE} from './prompts.js';
 import fs from 'fs';
 import chalk from 'chalk';
 
+const {bgRed: error} = chalk;
 let debugEnabled = false;
+let verboseError = false;
 
 let [path, options] = process.argv.slice(2);
 options = options.split(',');
@@ -24,6 +26,7 @@ function handleSolution(solution) {
   log(header);
 
   debugEnabled = options.includes(DEBUG);
+  verboseError = options.includes(VERBOSE);
   const dataPath = `${path}/${isTest?'test':'input'}.txt`;
 
   const [data, loadTime] =
@@ -50,8 +53,9 @@ function timedExecution(fn, ...args) {
   try{
     result = fn(...args);
   } catch({name,message,stack}){
-    const file = stack.match(/\(file:\/\/(.*)\)/)[1];
-    result = `${chalk.red(name)}: ${message} at ${file}`;
+    const [,file] = stack.match(/\(file:\/\/(.*)\)/);
+    result = verboseError ? '\n'+stack 
+      :`\n${error(name)}:\n${message}\nat ${file}`;
   };
   const end = performance.now();
   return [result, (end-start).toFixed(2)];
