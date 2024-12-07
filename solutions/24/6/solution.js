@@ -9,7 +9,8 @@ const dirD = allNext([0,0])
   .filter((x,i)=>i%2);
 
 export const part1 = ([s,obs]) => 
-  (undefined).o;
+  sumGrid(mapGrid(getAllVis(
+    s,getVis(s,obs),obs),c=>!!c));
 
 export const part2 = ([s,obs]) =>
   sumGrid(mapGrid(obs,(c,i,j)=>
