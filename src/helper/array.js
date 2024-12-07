@@ -14,6 +14,8 @@ export const sum = (arr) =>
 export const allPairs = (arr) =>
   arr.map((x,i)=>arr.slice(i+1).map(y=>[x,y])).flat();
 
+export const revCopy = (arr) => arr.slice().reverse()
+
 export const allPerms = (arr, n) =>
   n==2?allPairs(arr)
   :arr.map((x,i)=>
