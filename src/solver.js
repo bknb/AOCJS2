@@ -1,6 +1,6 @@
 import {log, clear, debug,
         testC, mainC, highC,
-        time1C, time2C, inputC} 
+        time1C, time2C, inputC, rainbow} 
   from './display.js';
 import {TESTD, DEBUG, VERBOSE} from './prompts.js';
 import fs from 'fs';
@@ -55,7 +55,8 @@ function timedExecution(fn, ...args) {
   } catch({name,message,stack}){
     const [,file] = stack.match(/\(file:\/\/(.*)\)/);
     result = verboseError ? '\n'+stack 
-      :`\n${error(name)}:\n${message}\nat ${file}`;
+      :`\n${error(name)}:\n${message}`
+      +`\nat ${rainbow(2*360/file.length)(file)}`;
   };
   const end = performance.now();
   return [result, (end-start).toFixed(2)];
