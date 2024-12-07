@@ -18,7 +18,7 @@ export const oob = (i,j,grid) =>
   grid[i]?.[j]===undefined;
 
 export const altGrid = (grid, x, y, v, c) =>
-  (grid=>grid[x][y]=v&&grid)
+  (aGrid=>aGrid[x][y]=v&&aGrid)
   (c?grid.map(x=>x.slice()):grid);
 
 export const zeroGrid = (grid) =>

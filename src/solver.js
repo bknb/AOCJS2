@@ -4,6 +4,7 @@ import {log, clear, debug,
   from './display.js';
 import {TESTD, DEBUG} from './prompts.js';
 import fs from 'fs';
+import chalk from 'chalk';
 
 let debugEnabled = false;
 
@@ -45,7 +46,13 @@ function handleSolution(solution) {
 
 function timedExecution(fn, ...args) {
   const start = performance.now();
-  const result = fn(...args);
+  let result;
+  try{
+    result = fn(...args);
+  } catch({name,message,stack}){
+    const file = stack.match(/\(file:\/\/(.*)\)/)[1];
+    result = `${chalk.red(name)}: ${message} at ${file}`;
+  };
   const end = performance.now();
   return [result, (end-start).toFixed(2)];
 }
