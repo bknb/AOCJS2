@@ -1,4 +1,4 @@
-import {linify, numberfy} from '#parser';
+import {lineWise, splitify, numberfy} from '#parser';
 
 const toNumber = (x) => +('0b'+x.join(''));
 
@@ -30,5 +30,5 @@ function getMost(ar, i) {
   return ar.reduce((a,c)=>a+c[i],0)>=ar.length/2;
 }
 
-export const init = (data) => 
-  linify(data).map(x=>numberfy(x.split('')));
+export const init = (data) =>
+  lineWise(splitify(), numberfy())(data);

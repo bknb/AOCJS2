@@ -1,11 +1,6 @@
 import {revCopy} from '#helper';
-import { log } from '#display';
-
-const opO = {
-  '+': (a, b) => a + b,
-  '*': (a, b) => a * b,
-  '||': (a, b) => +((''+a)+b),
-};
+import {log} from '#display';
+import {lineWise,tokify,toNum,numberfy} from '#parser';
 
 const red = {
   '+': (r,s) => r>s&&r-s,
@@ -25,20 +20,9 @@ export const part2 = (input) =>
   .reduce((a,c)=>(a+c),0);
 
 export const init = (data) =>
-  data.split('\n').map(x=>
-    x.match(/\d+/g).map(x=>+x))
-  .map(([r,...ops])=>[r,ops]);
+  lineWise(tokify(),numberfy())(data);
 
-const numOfSols = (opL)=>([r,ops])=>
-  [allCombs(opL,revCopy(ops))
-   .some(x=>r==x),r];
-
-const allCombs = (opL,[s,...oR]) =>
-  !oR.length?[s]:opL.map(o=>
-    allCombs(opL,oR)
-    .map(x=>opO[o](x,s))).flat();
-
-const hasSol = opL=>([result,list])=>
+const hasSol = opL=>([result,...list])=>
   recOps(opL,opL,result,revCopy(list));
 
 const recOps = (ao,os,r,ns)=>

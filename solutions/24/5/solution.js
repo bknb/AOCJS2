@@ -10,7 +10,7 @@ export const part2 = ([rules,pn]) =>
 export const init = (data) => 
   seperate(data)
     .map(s=>chunkify(s)
-      .map(numberfy));
+      .map(numberfy()));
 
 const sumMids = (input) => 
   input.map(r=>r[(r.length/2)|0])

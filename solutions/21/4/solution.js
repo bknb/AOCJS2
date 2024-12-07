@@ -41,6 +41,6 @@ export const init = (data) => {
   return [
     numberfy(draws.split(',')),
     cards.map(c=>chunkify(c)
-      .map(r=>numberfy(r)))
+      .map(numberfy()))
   ];
 }

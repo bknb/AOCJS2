@@ -1,3 +1,5 @@
+import {log} from '#display';
+
 export const linify = (input) =>
   input.split('\n');
 
@@ -13,8 +15,13 @@ export const gridWise = (...mapper) =>
       mapper.reduce((a,c)=>
         a.map(c),chunks))(input);
 
-export const numberfy = (items) =>
-  items.map(d=>isNaN(d)?d:+d);
+export const numberfy = () =>
+  (items) => items.map(toNum);
+
+export const toNum = d => isNaN(d)?d:+d;
+
+export const tokify = (regex = /[-\w]+/g) =>
+  item => item.match(regex);
 
 export const chunkify = (items, regex = /[-\w]+/g) =>
   items.map((item) => item.match(regex));
