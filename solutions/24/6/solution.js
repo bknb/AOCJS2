@@ -1,12 +1,10 @@
 import {
-  sumGrid, oob, allNext,
-  mapGrid, zeroGrid, altGrid} from '#helper';
+  sumGrid, oob, getStart,
+  mapGrid, zeroGrid, altGrid,
+  turn, move, next
+} from '#helper';
 
 import {gridify} from '#parser';
-
-const dirMap = '^>v<';
-const dirD = allNext([0,0])
-  .filter((x,i)=>i%2);
 
 export const part1 = ([s,obs]) => 
   sumGrid(mapGrid(getAllVis(
@@ -37,17 +35,7 @@ const getAllVis = (s, vis, obs) => {
   }
 }
 
-const getStart = (input) => 
-  input.reduce((a,r,i)=>
-    a||r.slice().reduce((b,c,j,arr)=>
-      (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
-      (dirMap.indexOf(c)),false),false);
-
 const getVis = (s, obs) =>
   (([x,y,d])=>altGrid(zeroGrid(obs),x,y,d+1))(s);
 
-const next = ([x,y,d]) =>
-  (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
-
-const turnR = ([x,y,d],c=1) => [x,y,(d+c)%4];
-const move = ([,,d],x,y) => [x,y,d];
+const turnR = s=>turn(s,2);

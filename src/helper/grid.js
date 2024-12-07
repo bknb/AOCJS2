@@ -29,13 +29,27 @@ export const copyGrid = (grid) =>
 
 export const getNext = (c,dir) => {
   switch(dir) {
-    case 0: c[1]--; case 1: c[0]--; break;
-    case 2: c[0]--; case 3: c[1]++; break;
-    case 4: c[1]++; case 5: c[0]++; break;
-    case 6: c[0]++; case 7: c[1]--; break;
+    case 7: c[1]--; case 0: c[0]--; break;
+    case 1: c[0]--; case 2: c[1]++; break;
+    case 3: c[1]++; case 4: c[0]++; break;
+    case 5: c[0]++; case 6: c[1]--; break;
   }
   return c;
 };
 
 export const allNext = (c) =>
   rng(0,8).map(x=>getNext(c.slice(),x));
+
+export const next = ([x,y,d]) =>
+  (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
+
+export const turn = ([x,y,d],c=1) => [x,y,(d+c)%8];
+export const move = ([,,d],x,y) => [x,y,d];
+
+export const getStart = (input, dirMap='^ > v <') => 
+  input.reduce((a,r,i)=>
+    a||r.slice().reduce((b,c,j,arr)=>
+      (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
+      (dirMap.indexOf(c)),false),false);
+
+const dirD = allNext([0,0]);
