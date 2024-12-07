@@ -2,6 +2,8 @@ import {
   sumGrid, oob, allNext,
   mapGrid, zeroGrid, altGrid} from '#helper';
 
+import {gridify} from '#parser';
+
 const dirMap = '^>v<';
 const dirD = allNext([0,0])
   .filter((x,i)=>i%2);
@@ -19,8 +21,8 @@ export const part2 = ([s,obs]) =>
 export const init = (data) =>
   (grid=>[
     getStart(grid),
-    grid.map(r=>r.map(c=>c=='#'))
-  ])(data.split('\n').map(x=>x.split('')));
+    mapGrid(grid,c=>c=='#')
+  ])(gridify(data));
 
 const getAllVis = (s, vis, obs) => {
   while(true) {

@@ -1,5 +1,5 @@
 import {rng, sumGrid, mapGrid, getEdges, getNext} from '#helper';
-import {linify} from '#parser';
+import {gridWise} from '#parser';
 
 const word = 'XMAS';
 
@@ -10,9 +10,7 @@ export const part2 = (input) =>
   sumGrid(mapGrid(input, count2));
 
 export const init = (data) => 
-  linify(data)
-    .map(x=>x.split('')
-    .map(x=>word.indexOf(x)));
+  gridWise(x=>word.indexOf(x))(data);
 
 const count = (n, fn) =>
   (c,i,j,input) =>
