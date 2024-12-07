@@ -1,6 +1,5 @@
 import {revCopy} from '#helper';
-import {log} from '#display';
-import {lineWise,tokify,toNum,numberfy} from '#parser';
+import {lineWise,tokify,numberfy} from '#parser';
 
 const red = {
   '+': (r,s) => r>s&&r-s,
