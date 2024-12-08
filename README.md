@@ -1,2 +1,2 @@
-Advent of Code project for Node
-===============================
+Advent of Code
+==============

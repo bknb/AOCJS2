@@ -52,4 +52,13 @@ export const getStart = (input, dirMap='^ > v <') =>
       (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
       (dirMap.indexOf(c)),false),false);
 
+export const visGrid = (framed=true,map='.#')=>grid=>
+  ((g,f)=>framed?`${f}\n${g}\n${f}`:g)
+  (grid.map(row=>gridRow(row,framed,map)).join('\n'),
+   `+${'-'.repeat(grid[0].length)}+`);
+
+const gridRow = (row,framed,map)=>
+  (r=>framed?`|${r}|`:r)
+  (row.map(x=>map[x|0]||'#').join(''));
+
 const dirD = allNext([0,0]);
