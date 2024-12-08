@@ -1,4 +1,4 @@
-import {zeroGrid,oob,sumGrid,vec} from '#helper';
+import {zeroGrid, oob, sumGrid, vec} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = (input) => 
@@ -29,12 +29,11 @@ const setAll = (input,i,j,x,y,anti,cond)=>
     (a.sub(b)))
   (vec(i,j),vec(x,y));
 
-const setIt = (a,d,anti,cond)=> {
-  let i = 0;
+const setIt = (a,d,anti,cond,i=0)=> {
   while(!oob(...a,anti)) {
     if (!cond||cond(i++))
       set(a,anti);
     a=a.add(d);
   }
 }
-const set = ([x,y],input,v=1)=>input[x][y]=v;
+const set = ([x,y],input)=>!(input[x][y]=1);
