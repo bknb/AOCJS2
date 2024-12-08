@@ -1,8 +1,5 @@
 import {zeroGrid,oob,sumGrid} from '#helper';
-import {gridWise} from '#parser';
-
-const antMap = 
-  '.0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKJMNOPQRSTUVWXYZ';
+import {gridify} from '#parser';
 
 export const part1 = (input) => 
   solve(input,k=>k===1);
@@ -11,7 +8,7 @@ export const part2 = (input) =>
   solve(input);
 
 export const init = (data) => 
-  gridWise(x=>antMap.indexOf(x))(data);
+  gridify(data);
 
 export const solve = (input, cond) => {
   const anti = zeroGrid(input);
@@ -25,7 +22,7 @@ export const solve = (input, cond) => {
 
 const setAll = (input,i,j,x,y,anti,cond)=>
   (i!=x||j!=y)
-  &&(input[i][j]&&input[i][j]===input[x][y])
+  &&(input[i][j]!='.'&&input[i][j]===input[x][y])
   &&((a,b)=>(d=>
     setIt(a,d,anti,cond)
     &&setIt(b,neg(d),anti,cond))
