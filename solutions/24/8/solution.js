@@ -7,7 +7,6 @@ const antMap =
 
 export const part1 = (input) => {
   const anti = zeroGrid(input);
-  logGrid(anti);
   for (let i=input.length;i-->0;)
     for (let j=input[i].length;j-->0;)
       for (let x=input.length;x-->0;)
@@ -26,8 +25,29 @@ export const part1 = (input) => {
   return sumGrid(anti);
 }
 
-export const part2 = (input) => null
-  // Write your code here
+export const part2 = (input) => {
+  const anti = zeroGrid(input);
+  for (let i=input.length;i-->0;)
+    for (let j=input[i].length;j-->0;)
+      for (let x=input.length;x-->0;)
+        for(let y=input[x].length;y-->0;)
+          if(i!=x||j!=y)
+            if(input[i][j]&&input[i][j]===input[x][y]) {
+              const [a,b] = [i-x,j-y];
+              let [ni,nj] = [i,j];
+              let [nx,ny] = [x,y];
+              while(!oob(ni,nj,input)) {
+                anti[ni][nj]=1;
+                [ni,nj] = [ni+a,nj+b];
+              }
+              while(!oob(nx,ny,input)) {
+                anti[nx][ny]=1;
+                [nx,ny] = [nx-a,ny-b];
+              }
+            }
+  logGrid(anti);
+  return sumGrid(anti);
+}
 
 export const init = (data) => 
   logGrid(gridWise(x=>antMap.indexOf(x))(data),antMap);
