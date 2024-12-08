@@ -1,8 +1,8 @@
 import {rng} from './array.js';
 
 export const getEdges = (i,j,input) =>
-  [0,1].map(x=>[0,1].map(y=>
-    input[i+(x?1:-1)][j+(y?1:-1)])).flat();
+  allNext([0,0]).filter((_,i)=>i%2)
+  .map(([x,y])=>input[x+i][y+j]);
 
 export const mapGrid = (input, func) =>
   input.map((x,i)=>

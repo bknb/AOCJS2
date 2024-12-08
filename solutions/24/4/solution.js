@@ -1,5 +1,6 @@
 import {rng, sumGrid, mapGrid, getEdges, getNext} from '#helper';
 import {gridWise} from '#parser';
+import {log} from '#display';
 
 const word = 'XMAS';
 
@@ -39,5 +40,5 @@ const check2 = (c,i,j,input) =>
 const checkEdges = edges => 
   edges.every(x=>[1,3].includes(x))
   && ((edges[0] == edges[1]) 
-  != (edges[0] == edges[2]))
-  && edges[0] != edges[3];
+  != (edges[0] == edges[3]))
+  && edges[0] != edges[2];
