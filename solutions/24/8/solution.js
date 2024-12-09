@@ -14,15 +14,16 @@ export const solve = (input, cond) => {
   const anti = zeroGrid(input);
   for (let i=input.length;i-->0;)
     for (let j=input[i].length;j-->0;)
-      for (let x=input.length;x-->0;)
-        for(let y=input[x].length;y-->0;)
-          setAll(input,i,j,x,y,anti,cond);
+      if (input[i][j]!='.')
+        for (let x=input.length;x-->0;)
+          for(let y=input[x].length;y-->0;)
+            setAll(input,i,j,x,y,anti,cond);
   return sumGrid(anti);
 }
 
 const setAll = (input,i,j,x,y,anti,cond)=>
   (i!=x||j!=y)
-  &&(input[i][j]!='.'&&input[i][j]===input[x][y])
+  &&input[i][j]===input[x][y]
   &&((a,b)=>(d=>
     setIt(a,d,anti,cond)
     &&setIt(b,d.neg(),anti,cond))
