@@ -53,7 +53,9 @@ function timedExecution(fn, ...args) {
   try{
     result = fn(...args);
   } catch({name,message,stack}){
-    const [,file] = stack.match(/\(file:\/\/(.*)\)/);
+    let file = '';
+    const match = stack.match(/\(file:\/\/(.*)\)/);
+    if (match) [,file] = stack.match(/\(file:\/\/(.*)\)/);
     result = verboseError ? '\n'+stack 
       :`\n${error(name)}:\n${message}`
       +`\nat ${rainbow(2*360/file.length)(file)}`;
