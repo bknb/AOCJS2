@@ -1,5 +1,4 @@
-import {log,logGrid} from '#display';
-import {rng,count} from '#helper';
+import {rng} from '#helper';
 
 export const part1 = (seq) => {
   const filler = [...seq].reverse();
