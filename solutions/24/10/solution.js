@@ -1,7 +1,5 @@
-import {log,logGrid} from '#display';
 import {mapGrid, sumGrid, allNext,oob} from '#helper';
 import {gridWise, toNum} from '#parser';
-import chalk from 'chalk';
 
 export const part1 = (input) => 
   sumGrid(mapGrid(mapGrid(input,trailHead),c=>c.length));
