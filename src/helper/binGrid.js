@@ -1,8 +1,18 @@
+import {getAllChars} from '#helper';
+import {linify} from '#parser';
+
 export const colBG = (w,h)=> {
   let result = 1n;
   let bw = BigInt(w);
   for (let i=h; i-->0;)
     result|=result<<bw;
+  return result;
+}
+
+export const rowBG = (w)=> {
+  let result = 1n;
+  for (let i=w; i-->0;)
+    result|=result<<1n;
   return result;
 }
 
@@ -16,7 +26,7 @@ export const toBG = (grid,c)=> {
   return result;
 }
 
-export const visBG = (n,w,h=w,m='.#',c)=> {
+export const visBG = (n,w,h=w,m='.#')=> {
   let result = '';
   for (let i=h;i-->0;) {
     for (let j=w;j-->0;)
@@ -44,8 +54,6 @@ export const toSingleBG = (n,w,h=w)=> {
   return result;
 }
 
-//spread and move problems with wrapping
-
 export const spreadBG = (n,w,h)=>
   ((a,c)=>spreadUpDown(n,w,a)
     |sprtedLeftRight(n,w,c,a))
@@ -70,14 +78,41 @@ export const countBG = (n,w,h=w) => {
   return result;
 }
 
-export const bg = (grid) => {
-  const obj=toBG(grid);
-  const w=grid.length;
-  const h=grid[0].length;
+export const bg = (input) => {
+  const chars = getAllChars(input)
+    .filter(c=>c!='\n');
+  const lines = linify(input);
+  const w = lines.length;
+  const h = lines[0].length;
 
+  const bgs = chars.reduce((a,c)=>
+    a.set(c,toBG(lines,c)),new Map());
+  
   const all=allBG(w,h);
-  const c=colBG(w,h);
+  const col=colBG(w,h);
+  const row=rowBG(w);
+  const wR=all^col;
+  const wL=all^(col<<BigInt(w-1));
+  const wU=all^row;
 
-  const spread=spreadBG(all,w,h);
+  const spread=n=>
+    spreadUD(n)|spreadLR(n);
+
+  const spreadUD = n=>
+    (n&wU)>>BigInt(w)|n<<BigInt(w);
+
+  const spreadLR = n=>
+    (n&wL)<<1n|(n&wR)>>1n;
+
+  const visL = n=>
+    visBG(n,w,h);
+
+  const toSingles = n=>
+    toSingleBG(n,w,h);
+
+  const count = n=>
+    countBG(n,w,h);
+
+  return {chars,bgs,visL,spread,toSingles,count};
 }
   
