@@ -1,8 +1,7 @@
 import {rng} from './array.js';
 
 export const getEdges = (i,j,input) =>
-  allNext([0,0]).filter((_,i)=>i%2)
-  .map(([x,y])=>input[x+i][y+j]);
+  allNext([i,j],false).map(([x,y])=>input[x][y]);
 
 export const mapGrid = (input, func) =>
   input.map((x,i)=>
@@ -37,8 +36,9 @@ export const getNext = (c,dir) => {
   return c;
 };
 
-export const allNext = (c) =>
-  rng(0,8).map(x=>getNext(c.slice(),x));
+export const allNext = (c=[0,0],wd) =>
+  (dirs=>dirs.map(x=>getNext(c.slice(),x)))
+  (rng(0,8).filter((_,i)=>i%2!=wd));
 
 export const next = ([x,y,d]) =>
   (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
@@ -61,4 +61,4 @@ const gridRow = (row,framed,map)=>
   (r=>framed?`|${r}|`:r)
   (row.map(x=>map[x|0]||'#').join(''));
 
-const dirD = allNext([0,0]);
+const dirD = allNext();

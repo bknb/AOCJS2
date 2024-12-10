@@ -58,7 +58,7 @@ function timedExecution(fn, ...args) {
     if (match) [,file] = stack.match(/\(file:\/\/(.*)\)/);
     result = verboseError ? '\n'+stack 
       :`\n${error(name)}:\n${message}`
-      +`\nat ${rainbow(2*360/file.length)(file)}`;
+      +`\nat ${rainbow(file.length/2)(file)}`;
   };
   const end = performance.now();
   return [result, (end-start).toFixed(2)];

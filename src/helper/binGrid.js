@@ -1,5 +1,3 @@
-import {log} from '#display';
-
 export const toBG = (grid,c)=> {
   let result = 0n;
   for (let i=grid.length;i-->0;)
@@ -10,7 +8,7 @@ export const toBG = (grid,c)=> {
   return result;
 }
 
-export const BGtoStr = (n,w,h=w,m='.#')=> {
+export const visBG = (n,w,h=w,m='.#')=> {
   let result = '';
   for (let i=h;i-->0;) {
     for (let j=w;j-->0;)
@@ -18,7 +16,30 @@ export const BGtoStr = (n,w,h=w,m='.#')=> {
     i&&(result+='\n');
   }
   return result;
-} 
+}
+
+export const allBG = (w,h=w) => {
+  let result = 1n;
+  for (let i=h;i-->0;)
+    for (let j=w;j-->0;)
+      result|=result<<1n;
+  return result;
+}
+
+export const toSingleBG = (n,w,h=w)=> {
+  let result = [];
+  const length = w*h;
+  for (let i=length;i-->0;) {
+    if(n&1n) result.push(1n<<BigInt(length-1-i))
+    n>>=1n;
+  }
+  return result;
+}
+
+//spread and move problems with wrapping
+
+export const spreadBG = (n,w)=>
+  n>>BigInt(w)|n<<BigInt(w)|n<<1n|n>>1n;
 
 export const moveBG = (n,[dx,dy],w) =>
   n<<BigInt(dx*w+dy);

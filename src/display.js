@@ -1,5 +1,5 @@
 import {isDebug} from './solver.js';
-import {HSV2RGB, shiftHSV, visGrid} from './helper.js';
+import {HSV2RGB, shiftHSV, visGrid, visBG} from './helper.js';
 import chalk from 'chalk';
 
 export const testC = chalk.italic.bold;
@@ -9,12 +9,12 @@ export const time1C = chalk.yellow;
 export const time2C = chalk.magenta;
 export const inputC = chalk.rgb(20,180,20);
 
-export const rainbow = (step)=> (str) => {
+export const rainbow = (length)=> (str) => {
   let result = '';
   let color = shiftHSV([0,0.8,0.8],20);
   for (let i = 0; i < str.length; i++)
     result+=chalk.rgb(
-      ...HSV2RGB(color = shiftHSV(color,step)))(str[i]);
+      ...HSV2RGB(color = shiftHSV(color,360/length)))(str[i]);
   return result;
 }
 
@@ -35,6 +35,9 @@ export const error = (...text) =>
 
 export const logGrid = (grid, {framed, map}={}) =>
   console.log(visGrid(framed,map)(grid)) || grid;
+
+export const logBG = (n,w,h,m,c) =>
+  console.log((vn=>c?c(vn):vn)(visBG(n,w,h,m))) || n;
 
 export const oLog = (obj) => 
   console.log(

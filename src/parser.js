@@ -1,3 +1,5 @@
+import {toBG} from '#helper';
+
 export const linify = (input) =>
   input.split('\n');
 
@@ -35,6 +37,10 @@ export const matcher = (regex, n) =>
 
 export const gridify = (input) =>
   lineWise(splitify())(input);
+
+export const bgify = (input,arr=['#']) =>
+  (g=>[arr.map(n=>toBG(g,''+n)),g.length,g[0].length])
+  (gridWise(toNum)(input));
 
 export const seperate = (input, seperator = /^\s*$/) =>
   linify(input).reduce(([[...a],...r],c)=>

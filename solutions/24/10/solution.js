@@ -8,7 +8,7 @@ export const part2 = (input) =>
   trailHead(input,false);
 
 export const init = (data) => 
-  gridWise(toNum)(data)
+  gridWise(toNum)(data);
 
 const trailHead = (grid,f) =>
   sumGrid(mapGrid(grid,(c,x,y)=>

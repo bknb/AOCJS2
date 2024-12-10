@@ -1,6 +1,5 @@
 import {rng, sumGrid, mapGrid, getEdges, getNext} from '#helper';
 import {gridWise} from '#parser';
-import {log} from '#display';
 
 const word = 'XMAS';
 
