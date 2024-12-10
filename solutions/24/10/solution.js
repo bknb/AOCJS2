@@ -2,13 +2,13 @@ import {mapGrid, sumGrid, allNext,oob} from '#helper';
 import {gridWise, toNum} from '#parser';
 
 export const part1 = (input) => 
-  sumGrid(mapGrid(mapGrid(input,trailHead),c=>c.length));
+  sumGrid(mapGrid(input,trailHead));
 
 const trailHead = (c,x,y,grid) =>
-  c==0?countTH(0,[[x,y]],grid):[];
+  c==0?countTH(0,[[x,y]],grid).length:0;
 
 const trailRating = (c,x,y,grid) =>
-  c==0?countTH2(0,[[x,y]],grid):[];
+  c==0?countTH2(0,[[x,y]],grid).length:0;
 
 const countTH2 = (c,l,grid) =>
   c==9?l:countTH2(c+1,
@@ -27,7 +27,7 @@ const stepUp = (c, x, y, grid) =>
     .filter(([x,y])=>grid[x][y]==c+1);
 
 export const part2 = (input) => 
-  sumGrid(mapGrid(mapGrid(input,trailRating),c=>c.length));
+  sumGrid(mapGrid(input,trailRating));
 
 export const init = (data) => 
   gridWise(toNum)(data)
