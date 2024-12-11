@@ -10,7 +10,7 @@ export const part2 = input=>addAllStones(input,times2);
 export const init = data=>data.split(' ').map(x=>+x);
 
 const addAllStones = (stones, blinks)=>
-  stones.reduce((a,c)=>a+ev(blinks,c),0);
+  stones.reduce((a,s)=>a+ev(blinks,s),0);
 
 const ev = cached((n,s)=>
   !n?1:sum(next(s).map(s=>ev(n-1,s))));
