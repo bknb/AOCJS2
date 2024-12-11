@@ -3,8 +3,14 @@ const times2 = 75;
 
 const cache = new Map();
 
-export const part1 = (input) => 
-  input.reduce((a,c)=>a+ev(c,times1),0);
+export const part1 = input=>addAllStones(input,times1);
+
+export const part2 = input=>addAllStones(input,times2);
+
+export const init = data=>data.split(' ');
+
+const addAllStones = (stones, blinks)=>
+  stones.reduce((a,c)=>a+ev(c,blinks),0);
 
 const ev = (stone,n) => {
   if(!n) return 1;
@@ -19,9 +25,3 @@ const ev = (stone,n) => {
   cache.set(key,result);
   return result;
 }
-
-export const part2 = (input) => 
-  input.reduce((a,c)=>a+ev(c,times2),0);
-
-export const init = (data) =>
-  data.split(' ');
