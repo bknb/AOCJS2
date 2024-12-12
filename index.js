@@ -1,6 +1,9 @@
 import {execSync} from 'child_process';
 import * as prompt from './src/prompts.js';
 import fs from 'fs';
+import chalk from 'chalk';
+
+const HEADER_PATH = 'src/assets/header.txt';
 
 startStep();
 
@@ -40,6 +43,9 @@ function solveStep(answer) {
   const path = getPath(answer);
   const command = `node src/solver.js ${path} ${opts}`;
   console.clear();
+  if (fs.existsSync(HEADER_PATH))
+    console.log(chalk.rgb(255,128,128).bold(
+      fs.readFileSync(HEADER_PATH, 'utf8')));
   try{
     execSync(command, { stdio: 'inherit' });
   } catch(e){
