@@ -1,5 +1,5 @@
 import {log} from '#display';
-import {uniqChars, allNext, bordered} from '#helper';
+import {uniqChars, allNext, bordered, rng} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = ([plants,grid]) => {
@@ -24,19 +24,13 @@ export const init = (data) =>
 
 const costSides = fs=> {
   const isin=([i,j])=>fs.some(([x,y])=>i==x&&j==y);
-  const sides = fs.map(c=> {
-    const ns = allNext(c);
-    let r = 0;
-    if(!isin(ns[0])&&!isin(ns[2])) r++;
-    if(isin(ns[0])&&isin(ns[2])&&!isin(ns[1])) r++;
-    if(!isin(ns[2])&&!isin(ns[4]))r++;
-    if(isin(ns[2])&&isin(ns[4])&&!isin(ns[3])) r++;
-    if(!isin(ns[4])&&!isin(ns[6]))r++;
-    if(isin(ns[4])&&isin(ns[6])&&!isin(ns[5])) r++;
-    if(!isin(ns[6])&&!isin(ns[0])) r++;
-    if(isin(ns[6])&&isin(ns[0])&&!isin(ns[7])) r++;
-    return r;
-  }).reduce((a,c)=>a+c);
+  const sides = fs.map(c=>
+    ((ns=allNext(c))=>
+      rng(0,4).reduce((a,c)=>
+        ((i,ni=(i+2)%8)=>(isin(ns[i])
+          ?(isin(ns[ni])&&!isin(ns[i+1]))
+          :!isin(ns[ni]))?a+1:a)
+        (c*2),0))()).reduce((a,c)=>a+c);
   return fs.length*sides;
 }
 
@@ -49,8 +43,9 @@ const costPeri = grid=>fs=> {
 }
 
 const getArea = (c,i,j,grid,fs) => {
-  if (grid[i][j]==c && !fs.has(i+','+j)) {
-    fs.add(i+','+j);
+  const sij=i+','+j;
+  if (grid[i][j]==c && !fs.has(sij)) {
+    fs.add(sij);
     allNext([i,j],true)
       .forEach(([x,y])=>
         getArea(c,x,y,grid,fs));
