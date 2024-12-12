@@ -1,4 +1,3 @@
-import {log} from '#display';
 import {count, checkCharNM} from '#helper';
 
 export const part1 = (input) => 
