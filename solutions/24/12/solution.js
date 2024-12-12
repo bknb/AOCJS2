@@ -1,5 +1,5 @@
-import {uniqChars, allNext, bordered,
-        rng, count, isXYInCoordinates} from '#helper';
+import {uniqChars, allNext, rng,
+        count, isXYInCoordinates} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = (input) => 
@@ -11,13 +11,13 @@ export const part2 = (input) =>
 const solve = ([plants,grid],countFn) =>
   [...getAreas(plants,grid).values()]
     .map(x=>x.map(cost(
-      countFn,([x,y])=>grid[x][y]))
+      countFn,([x,y])=>grid[x]?.[y]))
     .reduce((a,c)=>a+c))
     .reduce((a,c)=>a+c);
 
 export const init = (data) => 
   [uniqChars(data).filter(x=>x!='\n'),
-   bordered(gridify(data))];
+   gridify(data)];
 
 const cost = (fn,v)=>fs=>
   fs.length*fs.map(fn(v))
@@ -40,7 +40,7 @@ const fences = v=>c=>
 
 const getArea = (c,i,j,grid,fs) =>
   ((sij=i+','+j)=>
-    (grid[i][j]==c&&!fs.has(sij)
+    (grid[i]?.[j]==c&&!fs.has(sij)
      ?fs.add(sij)&&
      allNext([i,j],true).forEach(([x,y])=>
        getArea(c,x,y,grid,fs))
@@ -49,8 +49,8 @@ const getArea = (c,i,j,grid,fs) =>
 const getAreas = (plants,grid)=> {
   const areas = new Map();
   plants.forEach(x=>areas.set(x,[]));
-  for(let x=grid.length-1;x-->1;)
-    for(let y=grid[x].length-1;y-->1;) {
+  for(let x=grid.length;x-->0;)
+    for(let y=grid[x].length;y-->0;) {
       const c = grid[x][y];
       const a = areas.get(c);
       if (!a.find(isXYInCoordinates(x,y)))
