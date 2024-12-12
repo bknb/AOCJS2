@@ -1,4 +1,4 @@
-import {getAllChars,rng} from '#helper';
+import {uniqChars,rng} from '#helper';
 import {linify} from '#parser';
 
 export const colBG = (w,h)=> {
@@ -79,7 +79,7 @@ export const countBG = (n,w,h=w) => {
 }
 
 export const bg = (input) => {
-  const chars = getAllChars(input)
+  const chars = uniqChars(input)
     .filter(c=>c!='\n');
   const lines = linify(input);
   const w = lines.length;

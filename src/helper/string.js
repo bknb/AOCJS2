@@ -1,5 +1,2 @@
-export const remove = (str, regex) =>
-  str.replace(regex, '');
-
-export const getAllChars = (str) =>
+export const uniqChars = (str) =>
   [...new Set(str.split(''))]
