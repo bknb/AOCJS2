@@ -1,17 +1,44 @@
 import {log} from '#display';
-import {uniqChars, allNext, vec} from '#helper';
+import {uniqChars, allNext, bordered} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = ([plants,grid]) => {
-  grid.map(r=>['#',...r,'#']);
-  const hr = '#'.repeat(grid[0].length+2).split('');
-  grid = [hr,...grid.map(r=>['#',...r,'#']),hr];
   const areas = getAreas(plants,grid);
   return [...areas.values()]
     .map(x=>x.map(costPeri(grid))
     .reduce((a,c)=>a+c))
     .reduce((a,c)=>a+c);
 };
+
+export const part2 = ([plants,grid]) => {
+  const areas = getAreas(plants,grid);
+  return [...areas.values()]
+    .map(x=>x.map(costSides)
+    .reduce((a,c)=>a+c))
+    .reduce((a,c)=>a+c);
+};
+
+export const init = (data) => 
+  [uniqChars(data).filter(x=>x!='\n'),
+   bordered(gridify(data))];
+
+const costSides = fs=> {
+  const isin=([i,j])=>fs.some(([x,y])=>i==x&&j==y);
+  const sides = fs.map(c=> {
+    const ns = allNext(c);
+    let r = 0;
+    if(!isin(ns[0])&&!isin(ns[2])) r++;
+    if(isin(ns[0])&&isin(ns[2])&&!isin(ns[1])) r++;
+    if(!isin(ns[2])&&!isin(ns[4]))r++;
+    if(isin(ns[2])&&isin(ns[4])&&!isin(ns[3])) r++;
+    if(!isin(ns[4])&&!isin(ns[6]))r++;
+    if(isin(ns[4])&&isin(ns[6])&&!isin(ns[5])) r++;
+    if(!isin(ns[6])&&!isin(ns[0])) r++;
+    if(isin(ns[6])&&isin(ns[0])&&!isin(ns[7])) r++;
+    return r;
+  }).reduce((a,c)=>a+c);
+  return fs.length*sides;
+}
 
 const costPeri = grid=>fs=> {
   const fences = fs.map(([i,j])=>
@@ -45,11 +72,3 @@ const getAreas = (plants,grid)=> {
     }
   return areas;
 }
-
-export const part2 = (input) => {
-  // Write your code here
-  return null;
-};
-
-export const init = (data) => 
-  [uniqChars(data).filter(x=>x!='\n'),gridify(data)];

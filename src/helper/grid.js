@@ -26,6 +26,10 @@ export const zeroGrid = (grid) =>
 export const copyGrid = (grid) =>
   grid.map(x=>x.slice());
 
+export const bordered = (grid) =>
+  (hr=>[hr,...grid.map(r=>['#',...r,'#']),hr])
+  ('#'.repeat(grid[0].length+2).split(''));
+
 export const getNext = (c,dir) => {
   switch(dir) {
     case 7: c[1]--; case 0: c[0]--; break;
