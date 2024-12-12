@@ -1,5 +1,5 @@
-import {log} from '#display';
-import {uniqChars, allNext, bordered, rng, count} from '#helper';
+import {uniqChars, allNext, bordered,
+        rng, count, isInCs} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = (input) => 
@@ -26,8 +26,8 @@ const corners = v=>x=>
   ((ns=allNext(x),cf=v(x))=>
     rng(0,4).reduce((a,c)=>
       ((i,ni=(i+2)%8)=>
-        (v(ns[i])!=cf)==(v(ns[ni])!=cf)
-        &&(cf!=v(ns[i+1])||v(ns[i])!=cf)
+        (v(ns[i])==cf)==(cf==v(ns[ni]))
+        &&(cf!=v(ns[i+1])||cf!=v(ns[i]))
         ?a+1:a)
       (c*2),0))();
 
@@ -37,9 +37,8 @@ const fences = v=>c=>
 const getArea = (c,i,j,grid,fs) =>
   ((sij=i+','+j)=>
     (grid[i][j]==c&&!fs.has(sij)
-     ?fs.add(sij)
-     &&allNext([i,j],true)
-     .forEach(([x,y])=>
+     ?fs.add(sij)&&
+     allNext([i,j],true).forEach(([x,y])=>
        getArea(c,x,y,grid,fs))
      ||fs:fs))();
 
@@ -50,9 +49,8 @@ const getAreas = (plants,grid)=> {
     for(let j=grid[i].length-1;j-->1;) {
       const c = grid[i][j];
       const a = areas.get(c);
-      let na = a.find((afs)=>afs.some(([x,y])=>x==i&&y==j));
-      if (!na) a.push(na=
-        [...getArea(c,i,j,grid,new Set())]
+      if (!a.find(isInCs(i,j)))
+        a.push([...getArea(c,i,j,grid,new Set())]
         .map(v=>v.split(',')));
     }
   return areas;

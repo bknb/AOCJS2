@@ -18,6 +18,9 @@ export const sumGrid = (grid) =>
     (a+c.reduce((a,c)=>
       (a+c),0)),0);
 
+export const isInCs = (i,j)=>
+  cs=>cs.some(([x,y])=>x==i&&y==j);
+
 /**
  * Returns if given coordinates [i,j] are out
  * bounds of the given grid.
