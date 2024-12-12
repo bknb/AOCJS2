@@ -2,21 +2,17 @@ import {log} from '#display';
 import {uniqChars, allNext, bordered, rng} from '#helper';
 import {gridify} from '#parser';
 
-export const part1 = ([plants,grid]) => {
-  const areas = getAreas(plants,grid);
-  return [...areas.values()]
-    .map(x=>x.map(costPeri(grid))
-    .reduce((a,c)=>a+c))
-    .reduce((a,c)=>a+c);
-};
+export const part1 = ([plants,grid]) => 
+  solve(plants,grid,costPeri(grid))
 
-export const part2 = ([plants,grid]) => {
-  const areas = getAreas(plants,grid);
-  return [...areas.values()]
-    .map(x=>x.map(costSides)
+export const part2 = ([plants,grid]) => 
+  solve(plants,grid,costSides);
+
+const solve = (plants,grid,costFn) =>
+  [...getAreas(plants,grid).values()]
+    .map(x=>x.map(costFn)
     .reduce((a,c)=>a+c))
     .reduce((a,c)=>a+c);
-};
 
 export const init = (data) => 
   [uniqChars(data).filter(x=>x!='\n'),
