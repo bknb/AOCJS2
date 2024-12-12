@@ -22,14 +22,18 @@ const cost = (fn,v)=>fs=>
   fs.length*fs.map(fn(v))
     .reduce((a,c)=>a+c);;
 
-const corners = v=>x=>
-  ((ns=allNext(x),cf=v(x))=>
-    rng(0,4).reduce((a,c)=>
-      ((i,ni=(i+2)%8)=>
-        (v(ns[i])==cf)==(cf==v(ns[ni]))
-        &&(cf!=v(ns[i+1])||cf!=v(ns[i]))
-        ?a+1:a)
-      (c*2),0))();
+const corners = value=>coordinate=>
+  ((neighbors=allNext(coordinate),
+    cell=value(coordinate))=>
+    rng(0,4).reduce((accu,direction)=>
+      ((dir,orthoDir=(dir+2)%8,
+        n1=value(neighbors[dir]),
+        n2=value(neighbors[dir+1]),
+        n3=value(neighbors[orthoDir]))=>
+        (n1==cell)==(cell==n3)
+        &&(cell!=n2||cell!=n1)
+        ?accu+1:accu)
+      (direction*2),0))();
 
 const fences = v=>c=>
     count(allNext(c,true),x=>v(x)!=v(c));
