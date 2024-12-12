@@ -1,7 +1,3 @@
-import {log} from '#display';
-import * as helper from '#helper';
-import * as parser from '#parser';
-
 const alph = 'abcdefghijklmnopqrstuvwxyz'.split('');
 
 export const part1 = (input) => {
