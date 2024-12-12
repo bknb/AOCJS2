@@ -2,13 +2,13 @@ import {log} from '#display';
 import {uniqChars, allNext, bordered, rng} from '#helper';
 import {gridify} from '#parser';
 
-export const part1 = ([plants,grid]) => 
-  solve(plants,grid,costPeri(grid))
+export const part1 = (input) => 
+  solve(input,costPeri)
 
-export const part2 = ([plants,grid]) => 
-  solve(plants,grid,costSides);
+export const part2 = (input) => 
+  solve(input,costSides);
 
-const solve = (plants,grid,costFn) =>
+const solve = ([plants,grid],costFn) =>
   [...getAreas(plants,grid).values()]
     .map(x=>x.map(costFn)
     .reduce((a,c)=>a+c))
@@ -19,7 +19,8 @@ export const init = (data) =>
    bordered(gridify(data))];
 
 const costSides = fs=> {
-  const isin=([i,j])=>fs.some(([x,y])=>i==x&&j==y);
+  const isin=([i,j])=>
+    fs.some(([x,y])=>i==x&&j==y);
   const sides = fs.map(c=>
     ((ns=allNext(c))=>
       rng(0,4).reduce((a,c)=>
@@ -30,10 +31,12 @@ const costSides = fs=> {
   return fs.length*sides;
 }
 
-const costPeri = grid=>fs=> {
-  const fences = fs.map(([i,j])=>
-    allNext([i,j],true).filter(([x,y])=>
-      grid[i][j]!=grid[x][y]).length)
+const costPeri = fs=> {
+  const isin=([i,j])=>
+    fs.some(([x,y])=>i==x&&j==y);
+  const fences = fs.map(c=>
+    allNext(c,true)
+    .filter(x=>!isin(x)).length)
     .reduce((a,c)=>a+c);
   return fs.length*fences;
 }
