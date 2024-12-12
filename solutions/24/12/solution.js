@@ -31,7 +31,7 @@ const corners = value=>coordinate=>
         n2=value(neighbors[dir+1]),
         n3=value(neighbors[orthoDir]))=>
         (n1==cell)==(cell==n3)
-        &&(cell!=n2||cell!=n1)
+        &&(cell!=n1||cell!=n2)
         ?accu+1:accu)
       (direction*2),0))();
 
