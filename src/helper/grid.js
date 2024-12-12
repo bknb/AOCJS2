@@ -18,7 +18,7 @@ export const sumGrid = (grid) =>
     (a+c.reduce((a,c)=>
       (a+c),0)),0);
 
-export const isInCs = (i,j)=>
+export const isXYInCoordinates = (i,j)=>
   cs=>cs.some(([x,y])=>x==i&&y==j);
 
 /**

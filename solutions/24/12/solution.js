@@ -1,5 +1,5 @@
 import {uniqChars, allNext, bordered,
-        rng, count, isInCs} from '#helper';
+        rng, count, isXYInCoordinates} from '#helper';
 import {gridify} from '#parser';
 
 export const part1 = (input) => 
@@ -50,12 +50,12 @@ const getArea = (c,i,j,grid,fs) =>
 const getAreas = (plants,grid)=> {
   const areas = new Map();
   plants.forEach(x=>areas.set(x,[]));
-  for(let i=grid.length-1;i-->1;)
-    for(let j=grid[i].length-1;j-->1;) {
-      const c = grid[i][j];
+  for(let x=grid.length-1;x-->1;)
+    for(let y=grid[x].length-1;y-->1;) {
+      const c = grid[x][y];
       const a = areas.get(c);
-      if (!a.find(isInCs(i,j)))
-        a.push([...getArea(c,i,j,grid,new Set())]
+      if (!a.find(isXYInCoordinates(x,y)))
+        a.push([...getArea(c,x,y,grid,new Set())]
         .map(v=>v.split(',')));
     }
   return areas;
