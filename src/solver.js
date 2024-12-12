@@ -1,4 +1,4 @@
-import {log, clear, debug,
+import {log, debug,
         testC, mainC, highC,
         time1C, time2C, inputC, rainbow} 
   from './display.js';
@@ -19,8 +19,7 @@ function handleSolution(solution) {
   const { init } = solution;
   const [year, day] = path.match(/\d+/g);
   const isTest = options.includes(TESTD);
-
-  clear();
+  
   let header = mainC(`Solutions(${year}-${day})`);
   if (isTest) header+=testC(' ~~Test');
   log(header);

@@ -39,7 +39,12 @@ function solveStep(answer) {
   const opts = answer.options.join();
   const path = getPath(answer);
   const command = `node src/solver.js ${path} ${opts}`;
-  execSync(command, { stdio: 'inherit' });
+  console.clear();
+  try{
+    execSync(command, { stdio: 'inherit' });
+  } catch(e){
+    console.log(e);
+  }
   prompt.rerun().then(({rerun}) => {
     if (rerun) solveOptionsStep(answer);
     else startStep();
