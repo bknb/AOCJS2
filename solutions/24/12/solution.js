@@ -31,9 +31,8 @@ const corners = value=>coordinate=>
         n1=value(neighbors[dir]),
         n2=value(neighbors[dir+1]),
         n3=value(neighbors[orthoDir]))=>
-        (n1==cell)==(cell==n3)
-        &&(cell!=n1||cell!=n2)
-        ?accu+1:accu)
+        accu+(+(n1==cell)==(cell==n3)
+        &&(cell!=n1||cell!=n2)))
       (direction*2),0))();
 
 const fences = v=>c=>
