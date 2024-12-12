@@ -46,8 +46,8 @@ const getArea = (c,i,j,grid,fs) =>
 const getAreas = (plants,grid)=> {
   const areas = new Map();
   plants.forEach(x=>areas.set(x,[]));
-  for(let i=1;i<grid.length-1;i++)
-    for(let j=1;j<grid[i].length-1;j++) {
+  for(let i=grid.length-1;i-->1;)
+    for(let j=grid[i].length-1;j-->1;) {
       const c = grid[i][j];
       const a = areas.get(c);
       let na = a.find((afs)=>afs.some(([x,y])=>x==i&&y==j));
