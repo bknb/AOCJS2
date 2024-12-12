@@ -10,7 +10,8 @@ export const part2 = (input) =>
 
 const solve = ([plants,grid],countFn) =>
   [...getAreas(plants,grid).values()]
-    .map(x=>x.map(cost(countFn,([x,y])=>grid[x][y]))
+    .map(x=>x.map(cost(
+      countFn,([x,y])=>grid[x][y]))
     .reduce((a,c)=>a+c))
     .reduce((a,c)=>a+c);
 
