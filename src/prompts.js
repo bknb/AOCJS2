@@ -49,7 +49,7 @@ export const rerun = () => inquirer
 
 export const solveOptions = (answer) => inquirer
   .prompt([
-    checkbox('options')
+    checkbox('options',answer)
       .message('What do you want?')
       .add('Test', TESTD)
       .add('Debug', DEBUG, false)

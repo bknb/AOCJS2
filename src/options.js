@@ -49,16 +49,21 @@ export const confirm = (name) => {
   return result;
 }
 
-export const checkbox = (name) => {
+export const checkbox = (name, answer) => {
   const option = {type: 'checkbox', name, choices: [],
                   message: 'Please select options',
                   askAnswered: true};
   const result = () => option;
+  result.default = (value) => {
+    option.default = value;
+    return result;
+  };
   result.message = (msg) => {
     option.message = msg;
     return result;
   };
   result.add = (name, value, checked = true) => {
+    checked = answer.options?.includes(value) ?? checked;
     option.choices.push({name, value, checked});
     return result;
   }
