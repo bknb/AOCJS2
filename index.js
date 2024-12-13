@@ -3,8 +3,9 @@ import * as prompt from './src/prompts.js';
 import fs from 'fs';
 import chalk from 'chalk';
 
-let HEADER;
 const HEADER_PATH = 'src/assets/header.txt';
+
+let HEADER;
 if (fs.existsSync(HEADER_PATH))
   HEADER = chalk.rgb(255,128,128).bold(
     fs.readFileSync(HEADER_PATH, 'utf8'));
