@@ -1,12 +1,14 @@
 import {debug} from '#display';
 import {seperate,lineWise,toNum} from '#parser';
 
+const inc = 10000000000000;
+
 export const part1 = (input) =>
   solve(input);
 
 export const part2 = (input) => 
   solve(input.map(([x,y,p])=>
-    [x,y,p.map(c=>c+10000000000000)]));
+    [x,y,p.map(c=>c+inc)]));
 
 const solve = (input)=>
   input.map(([x,y,p])=> {
