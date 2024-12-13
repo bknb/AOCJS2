@@ -1,7 +1,3 @@
-import {log} from '#display';
-import * as helper from '#helper';
-import * as parser from '#parser';
-
 const l = ['ABC','XYZ'];
 
 export const part1 = (input) => 
