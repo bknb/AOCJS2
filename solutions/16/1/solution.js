@@ -11,14 +11,15 @@ export const part1 = (input) =>
   .reduce((a,x)=>a+Math.abs(x),0);
 
 export const part2 = (input,s=[0,0],f=0) =>
-  input.slice().reduce((p,[t,d],i,arr) =>{
+  input.slice().reduce((p,[t,d],_,arr) =>{
     f = (t==='R'?++f:--f)&3;
-    s[f&1] += (f >> 1 ? -1 : 1)*+d;
-    log(s);
-    if (p.find(([x,y])=>
-      x===s[0]&&y===s[1]))
-      return arr.splice(1)&&s;
-    p.push([...s]);
+    for (let i=+d;i-->0;) {
+      s[f&1] += (f >> 1 ? -1 : 1);
+      if (p.find(([x,y])=>
+        x===s[0]&&y===s[1]))
+        return arr.splice(1)&&s;
+      p.push([...s]);
+    }
     return p;
   },[]).reduce((a,x)=>a+Math.abs(x),0);
 
