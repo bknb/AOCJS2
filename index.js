@@ -3,11 +3,16 @@ import * as prompt from './src/prompts.js';
 import fs from 'fs';
 import chalk from 'chalk';
 
+let HEADER;
 const HEADER_PATH = 'src/assets/header.txt';
+if (fs.existsSync(HEADER_PATH))
+  HEADER = chalk.rgb(255,128,128).bold(
+    fs.readFileSync(HEADER_PATH, 'utf8'));
 
 startStep();
 
 function startStep() {
+  if (HEADER) console.log(HEADER);
   prompt.intro().then(decisionStep);
 }
 
@@ -43,9 +48,7 @@ function solveStep(answer) {
   const path = getPath(answer);
   const command = `node src/solver.js ${path} ${opts}`;
   console.clear();
-  if (fs.existsSync(HEADER_PATH))
-    console.log(chalk.rgb(255,128,128).bold(
-      fs.readFileSync(HEADER_PATH, 'utf8')));
+  if (HEADER) console.log(HEADER);
   try{
     execSync(command, { stdio: 'inherit' });
   } catch(e){
