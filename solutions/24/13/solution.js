@@ -1,5 +1,4 @@
-import {log, debug} from '#display';
-import * as helper from '#helper';
+import {debug} from '#display';
 import {seperate,lineWise,toNum} from '#parser';
 
 export const part1 = (input) =>
