@@ -13,6 +13,7 @@ if (fs.existsSync(HEADER_PATH))
 startStep();
 
 function startStep() {
+  console.clear();
   if (HEADER) console.log(HEADER);
   prompt.intro().then(decisionStep);
 }
