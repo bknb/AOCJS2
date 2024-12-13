@@ -16,7 +16,7 @@ const solve = (input)=>
     const c1 = p1*x2-p2*x1;
     const c2 = y1*x2-y2*x1;
     if (c1%c2) return 0n;
-    const b = c1 / c2;
+    const b = c1/c2;
     const d = p1-b*y1;
     if (d%x1) return 0n;
     const a = d/x1;
