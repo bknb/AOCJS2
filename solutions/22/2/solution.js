@@ -15,4 +15,5 @@ export const part2 = (input) =>
 
 export const init = (data) => 
   data.split('\n').map(r=>
-    r.split(' ').map((x,i)=>l[i].indexOf(x)));
+    r.split(' ').map((x,i)=>
+      l[i].indexOf(x)));
