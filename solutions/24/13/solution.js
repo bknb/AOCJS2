@@ -25,5 +25,6 @@ const getTokens=
     c1%c2?0n:((
       b=c1/c2,
       d=p1-b*y1)=>
-      d%x1?0n:
-      (d/x1)*3n+b)())();
+      d%x1?0n:((
+      a=d/x1)=>a*3n+b)
+      ())())();
