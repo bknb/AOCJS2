@@ -1,19 +1,11 @@
-import {log, logGrid, debug} from '#display';
-import {rng, mod} from '#helper';
+import {log, debug} from '#display';
+import {mod} from '#helper';
+import {isTest} from '#solver';
 
-//const [w,h] = [101,103];
-const [w,h] = [101,103];
-const times = 100;
-
+let w,h;
 
 export const part1 = (input) => {
-  const rs=input.map(([x,y,dx,dy])=>{
-    x += dx*times;
-    y += dy*times;
-    x=mod(x,w);
-    y=mod(y,h);
-    return [x,y];
-  });
+  const rs=solve(input,100);
   const wh = w>>1;
   const hh = h>>1;
   return debug(rs.reduce(([a,b,c,d],[x,y])=>{
@@ -28,23 +20,26 @@ export const part1 = (input) => {
   },[0,0,0,0])).reduce((a,b)=>a*b);
 };
 
+const solve = (input, times) =>
+  input.map(([x,y,dx,dy])=>{
+    x += dx*times;
+    y += dy*times;
+    x=mod(x,w);
+    y=mod(y,h);
+    return [x,y];
+  });
+
 export const part2 = (input) => {
-  let rs=input;
   let t=0;
+  let rs=input;
   while (rs.some(([x,y],i,arr)=>
     arr.slice(i+1).some(([x2,y2])=>x2==x&&y2==y))) {
-    rs=input.map(([x,y,dx,dy])=>{
-      x += dx;
-      y += dy;
-      x=mod(x,w);
-      y=mod(y,h);
-      return [x,y,dx,dy];
-    });
-    t++;
+    rs=solve(input,++t);
   }
-  log(rs);
   return t;
 };
 
-export const init = (data) => 
-  data.split('\n').map(r=>r.match(/[-\d]+/g).map(x=>+x))
+export const init = (data) => {
+  [w,h] = isTest()?[11,7]:[101,103];
+  return data.split('\n').map(r=>r.match(/[-\d]+/g).map(x=>+x));
+}

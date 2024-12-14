@@ -9,6 +9,7 @@ import chalk from 'chalk';
 const {bgRed: error} = chalk;
 let debugEnabled = false;
 let verboseError = false;
+let testEnabled = false;
 
 let [path, options] = process.argv.slice(2);
 options = options.split(',');
@@ -18,15 +19,15 @@ import(`../${path}/solution.js`)
 function handleSolution(solution) {
   const { init } = solution;
   const [year, day] = path.match(/\d+/g);
-  const isTest = options.includes(TESTD);
+  testEnabled = options.includes(TESTD);
   
   let header = mainC(`Solutions(${year}-${day})`);
-  if (isTest) header+=testC(' ~~Test');
+  if (testEnabled) header+=testC(' ~~Test');
   log(header);
 
   debugEnabled = options.includes(DEBUG);
   verboseError = options.includes(VERBOSE);
-  const dataPath = `${path}/${isTest?'test':'input'}.txt`;
+  const dataPath = `${path}/${testEnabled?'test':'input'}.txt`;
 
   const [data, loadTime] =
     timedExecution(fs.readFileSync, dataPath, 'utf8');
@@ -64,3 +65,4 @@ function timedExecution(fn, ...args) {
 }
 
 export const isDebug = () => debugEnabled;
+export const isTest = () => testEnabled;
