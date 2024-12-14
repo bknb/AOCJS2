@@ -19,13 +19,11 @@ export const init = (data) =>
       .map(x=>BigInt(x))));
 
 const getTokens=
-  ([[x1,x2],[y1,y2],[p1,p2]])=> {
-    const c1 = p1*x2-p2*x1;
-    const c2 = y1*x2-y2*x1;
-    if (c1%c2) return 0n;
-    const b = c1/c2;
-    const d = p1-b*y1;
-    if (d%x1) return 0n;
-    const a = d/x1;
-    return a*3n+b;
-  }
+  ([[x1,x2],[y1,y2],[p1,p2]])=>((
+    c1=p1*x2-p2*x1,
+    c2=y1*x2-y2*x1)=>
+    c1%c2?0n:((
+      b=c1/c2,
+      d=p1-b*y1)=>
+      d%x1?0n:
+      (d/x1)*3n+b)())();
