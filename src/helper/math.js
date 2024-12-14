@@ -11,3 +11,6 @@ export const vec = (...x) => {
 
 export const gcd = (a,b)=>
   b==0?a:gcd(b,a%b);
+
+export const mod = (a,b)=>
+  ((a % b) + b) % b;
