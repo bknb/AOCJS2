@@ -40,10 +40,13 @@ const fences = v=>c=>
 
 const getArea = (c,i,j,grid,fs) =>
   ((sij=i+','+j)=>
-    (grid[i]?.[j]==c&&!fs.has(sij)
-     &&fs.add(sij)&&
-     allNext([i,j],true).forEach(([x,y])=>
-       getArea(c,x,y,grid,fs)))||fs)();
+    (grid[i]?.[j]==c
+     &&!fs.has(sij)
+     &&fs.add(sij)
+     &&allNext([i,j],true)
+     .forEach(([x,y])=>
+       getArea(c,x,y,grid,fs)))
+    ||fs)();
 
 const getAreas = (plants,grid)=> {
   const areas = new Map();
