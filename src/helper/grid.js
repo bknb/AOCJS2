@@ -85,8 +85,9 @@ export const allNext = (c=[0,0],oa) =>
   (rng(0,8).filter((_,i)=>i%2!=oa));
 
 
-export const next = ([x,y,d]) =>
-  (([dx,dy])=>[x+dx,y+dy])(dirD[d]);
+export const next = ([x,y,d],oa) =>
+  ((cd,[dx,dy]=dirD[cd])=>[x+dx,y+dy])
+  (oa==true?d*2:oa==false?d*2+1:d);
 export const turn = ([x,y,d],c=1) => [x,y,(d+c)%8];
 export const move = ([,,d],x,y) => [x,y,d];
 
