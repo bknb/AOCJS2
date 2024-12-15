@@ -49,8 +49,8 @@ const getArea = (c,i,j,grid,fs) =>
     ||fs)();
 
 const getAreas = (plants,grid)=> {
-  const areas = new Map();
-  plants.forEach(x=>areas.set(x,[]));
+  const areas = plants.reduce((as,x)=>
+    as.set(x,[]),new Map());
   for(let x=grid.length;x-->0;)
     for(let y=grid[x].length;y-->0;) {
       const c = grid[x][y];
