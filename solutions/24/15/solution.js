@@ -6,7 +6,7 @@ const dirMap = "^>v<";
 const dirs = allNext([0,0],true);
 
 export const part1 = ([grid,coms]) => {
-  grid = grid.map(r=>r.split(''));
+  grid = grid.map(x=>[...x]);
   let robot;
   for (let y = 0; y < grid.length; y++)
     for (let x = 0; x < grid[y].length; x++)
@@ -16,18 +16,15 @@ export const part1 = ([grid,coms]) => {
     let mRob = move(robot, '@', coms[i], grid);
     if (mRob) robot = mRob;
   }
-  let sum = 0;
-  for (let y = 0; y < grid.length; y++)
-    for (let x = 0; x < grid[y].length; x++)
-      if (grid[y][x] == 'O')
-        sum+=x+100*y;
-  return sum;
+  return sumOfCoords(grid,'O');
 };
 
 export const part2 = ([grid,coms]) => {
-  grid = grid.map(r=>r.replaceAll('#','##')
-    .replaceAll('.','..').replaceAll('O','[]')
-    .replaceAll('@','@.').split(''));
+  grid = grid.map(r=>r.reduce((a,c)=>
+    /[\.#]/.test(c)
+    ?a.concat([c,c],[])
+    :(c=='O'?a.concat(['[',']'])
+      :a.concat([c,'.'])),[]));
   let robot;
   for (let i = 0; i < coms.length; i++) {
     for (let y = 0; y < grid.length; y++)
@@ -36,14 +33,12 @@ export const part2 = ([grid,coms]) => {
           robot = [y,x];
     move2(robot, coms[i], grid);
   }
-  log(grid.map(r=>r.join('')).join('\n'))
-  let sum = 0;
-  for (let y = 0; y < grid.length; y++)
-    for (let x = 0; x < grid[y].length; x++)
-      if (grid[y][x] == '[')
-        sum+=x+100*y;
-  return sum;
+  return sumOfCoords(grid,'[');
 };
+
+const sumOfCoords = (grid, bc) =>
+  grid.reduce((a,c,i)=>a+c
+    .reduce((a,c,j)=>c==bc?a+i*100+j:a,0),0);
 
 const move = (tile, c, dir, grid) => {
   let nRob = tile.map((x,i)=>(x+dirs[dir][i]));
@@ -66,41 +61,34 @@ const move3 = ([x,y], dir, grid) => {
   const [nx,ny] = next([x,y,dir],true);
   const c = grid[x][y];
   const nc = grid[nx][ny];
-  if (grid[nx][ny] == '.') {
-    grid[nx][ny] = grid[x][y];
-    grid[x][y] = '.';
-    return;
-  }
-  if (dir%2) {
-    move3([nx,ny],dir,grid);
-    grid[nx][ny] = grid[x][y];
-    grid[x][y] = '.';
-  } else {
-    if (grid[nx][ny] == ']') {
-      move3([nx,ny-1],dir,grid);
+  if (nc != '.') {
+    if (dir%2) {
       move3([nx,ny],dir,grid);
-      grid[nx][ny] = grid[x][y];
-      grid[x][y] = '.';
-    }
-    else if (grid[nx][ny] == '[')  {
+    } else {
       move3([nx,ny],dir,grid);
-      move3([nx,ny+1],dir,grid);
-      grid[nx][ny] = grid[x][y];
-      grid[x][y] = '.';
+      if (nc == ']') {
+        move3([nx,ny-1],dir,grid);
+      }
+      if (nc == '[')  {
+        move3([nx,ny+1],dir,grid);
+      }
     }
   }
+  grid[nx][ny] = c;
+  grid[x][y] = '.';
 }
 
 const movable = ([x,y],dir,grid) => {
   const [nx,ny] = next([x,y,dir],true);
-  if (grid[nx][ny] == '#') return false;
-  if (dir%2 && (grid[nx][ny] == ']' || grid[nx][ny] == '[')) {
+  const nc = grid[nx][ny];
+  if (nc == '#') return false;
+  if (dir%2 && (nc == ']' || nc == '[')) {
     return movable([nx,ny],dir,grid);
   } else {
-    if (grid[nx][ny] == ']') 
+    if (nc == ']')
       return movable([nx,ny],dir,grid)
         &&movable([nx,ny-1],dir,grid);
-    if (grid[nx][ny] == '[')
+    if (nc == '[')
       return movable([nx,ny],dir,grid)
         &&movable([nx,ny+1],dir,grid);
   }
@@ -124,9 +112,8 @@ const getParts = ([x,y],dir,grid) => {
   }
 }
 
-export const init = (data) => {
-  const [grid, coms] = seperate(data);
-  return [grid,
-          coms.reduce((a,c)=>a.concat(c)).split('')
-          .map(c=>dirMap.indexOf(c))];
-};
+export const init = (data) =>
+  (([grid,coms]=seperate(data))=>
+   [grid.map(r=>r.split(''))
+   ,coms.reduce((a,c)=>a+c)
+   .split('').map(c=>dirMap.indexOf(c))])();

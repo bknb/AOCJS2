@@ -16,7 +16,7 @@ export const eachGrid = (input, func) =>
 export const sumGrid = (grid) =>
   grid.reduce((a,c)=>
     (a+c.reduce((a,c)=>
-      (a+c),0)),0);
+      a+c,0)),0);
 
 export const isXYInCoordinates = (i,j)=>
   cs=>cs.some(([x,y])=>x==i&&y==j);
@@ -84,10 +84,9 @@ export const allNext = (c=[0,0],oa) =>
   (dirs=>dirs.map(x=>getNext(c.slice(),x)))
   (rng(0,8).filter((_,i)=>i%2!=oa));
 
-
 export const next = ([x,y,d],oa) =>
   ((cd,[dx,dy]=dirD[cd])=>[x+dx,y+dy])
-  (oa==true?d*2:oa==false?d*2+1:d);
+  (oa===true?d*2:oa===false?d*2+1:d);
 export const turn = ([x,y,d],c=1) => [x,y,(d+c)%8];
 export const move = ([,,d],x,y) => [x,y,d];
 
