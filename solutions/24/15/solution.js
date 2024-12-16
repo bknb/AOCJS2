@@ -62,10 +62,8 @@ const move3 = ([x,y], dir, grid) => {
   const c = grid[x][y];
   const nc = grid[nx][ny];
   if (nc != '.') {
-    if (dir%2) {
-      move3([nx,ny],dir,grid);
-    } else {
-      move3([nx,ny],dir,grid);
+    move3([nx,ny],dir,grid);
+    if (!(dir%2)){
       if (nc == ']') {
         move3([nx,ny-1],dir,grid);
       }
