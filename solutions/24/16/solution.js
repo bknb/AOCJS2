@@ -7,7 +7,8 @@ let distS, sp;
 
 export const part1 = ([s,e,g])=> {
   distS = getDM([s],g);
-  return sp=getHeatGrid(distS,g)[e[0]][e[1]];
+  return sp=distS[e[0]][e[1]]
+    .reduce((a,c)=>Math.min(a,c));
 };
 
 const getDM = (s,g) => {
@@ -34,21 +35,6 @@ const getDM = (s,g) => {
   }
   return ds;
 }
-
-const getHeatGrid = (ds,g)=> {
-  const heatGrid = mapGrid(ds,(d,i,j)=>
-    !g[i][j]&&d.reduce((a,c)=>Math.min(a,c)));
-  const max = heatGrid.reduce((a,c)=>
-    Math.max(a,c.reduce((b,d)=>
-      Math.max(b,d))),0);
-  debug(heatGrid.map(r=>r.map(c=>
-    c!==false?heat(c,max)('▒')
-    :'.').join('')).join('\n'));
-  return heatGrid;
-}
-
-const heat = (c,m,w=c/m) =>
-  chalk.rgb((255*w)|0,(255*(1-w))|0,0);
 
 const nexts = (k,g)=> {
   const [,,d] = k;
