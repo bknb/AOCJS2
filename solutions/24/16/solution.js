@@ -11,6 +11,29 @@ export const part1 = ([s,e,g])=> {
     .reduce((a,c)=>Math.min(a,c));
 };
 
+export const part2 = ([s,e,g]) => {
+  if (!distS) part1([s,e,g]);
+  const distE = getDM(rng(4).map(d=>[...e,d]),g);
+  let sum = 0, all=[];
+  for (let i=distS.length;i-->0;)
+    for (let j=distS[0].length;j-->0;)
+      for (let k=distS[0][0].length;k-->0;)
+        if (distS[i][j][k]+distE[i][j][mod(k+2,4)]==sp)
+          all.push([i,j,k]);
+  return new Set(all.map(([x,y])=>(x+','+y))).size;
+};
+
+export const init = (data) => {
+  let s,e;
+  const grid = data.split('\n')
+    .map((r,x)=>r.split('').map((c,y)=>{
+      if (c == 'S') s = [x,y,1];
+      if (c == 'E') e = [x,y];
+      return ~~(c == '#');
+    }));
+  return [s,e,grid];
+};
+
 const getDM = (s,g) => {
   const ds = mapGrid(g,_=>
     rng(4).map(_=>Infinity));
@@ -54,27 +77,3 @@ const set3D = (grid, [x,y,z], val) =>
 
 const get3D = (grid, [x,y,z]) =>
   grid[x][y][z];
-
-export const part2 = ([s,e,g]) => {
-  if (!distS) part1([s,e,g]);
-  const distE = getDM(rng(4).map(d=>[...e,d]),g);
-  let sum = 0, all=[];
-  for (let i=distS.length;i-->0;)
-    for (let j=distS[0].length;j-->0;)
-      for (let k=distS[0][0].length;k-->0;) {
-        if (distS[i][j][k]+distE[i][j][mod(k+2,4)]==sp)
-          all.push([i,j,k]);
-      }
-  return new Set(all.map(([x,y])=>(x+','+y))).size;
-};
-
-export const init = (data) => {
-  let s,e;
-  const grid = data.split('\n')
-    .map((r,x)=>r.split('').map((c,y)=>{
-      if (c == 'S') s = [x,y,1];
-      if (c == 'E') e = [x,y];
-      return ~~(c == '#');
-    }));
-  return [s,e,grid];
-};
