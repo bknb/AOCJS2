@@ -40,9 +40,10 @@ function handleSolution(solution) {
 
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {
+      process.stdout.write(highC(`\nSolution${part}: `));
       const [output, time] =
         timedExecution(solution[`part${part}`], input);
-      log(highC(`\nSolution${part}: `) + output);
+      log(output);
       log(time2C(`in ${time}ms`));
     });
   log();
