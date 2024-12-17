@@ -2,7 +2,7 @@ import {log, debug,
         testC, mainC, highC,
         time1C, time2C, inputC, rainbow} 
   from './display.js';
-import {TESTD, DEBUG, VERBOSE} from './prompts.js';
+import {TESTD, DEBUG, VERBOSE, INPUT} from './prompts.js';
 import fs from 'fs';
 import chalk from 'chalk';
 
@@ -33,9 +33,10 @@ function handleSolution(solution) {
     timedExecution(fs.readFileSync, dataPath, 'utf8');
   const [input, prepTime] =
     timedExecution(init, data);
-  debug(inputC('Input:'), input);
-  debug(time1C(`loaded in ${loadTime}ms`));
-  debug(time1C(`prepared in ${prepTime}ms`));
+  if (options.includes(INPUT))
+    log(inputC('Input:'), input);
+  log(time1C(`loaded in ${loadTime}ms`));
+  log(chalk.greenBright(`prepared in ${prepTime}ms`));
 
   [1,2].filter(part=>options.includes(`part${part}`))
     .forEach(part => {

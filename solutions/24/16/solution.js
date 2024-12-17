@@ -6,7 +6,6 @@ export const part1 = ([s,e,g])=> {
   const ds = mapGrid(g,_=>rng(4).map(_=>Infinity));
   set3D(ds,s,0);
   const vs = new Set();
-  set3D(ds,s,0);
   const q = [s];
   let c;
   while (c=rmNearest(ds,q)) {

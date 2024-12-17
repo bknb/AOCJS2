@@ -6,6 +6,7 @@ export const CREATE = 'create';
 export const SOLVE = 'solve';
 export const END = 'end';
 export const DEBUG = 'debug';
+export const INPUT = 'input';
 export const PART1 = 'part1';
 export const PART2 = 'part2';
 export const TESTD = 'testD';
@@ -52,6 +53,7 @@ export const solveOptions = (answer) => inquirer
     checkbox('options',answer)
       .message('What do you want?')
       .add('Test', TESTD)
+      .add('Input', INPUT, false)
       .add('Debug', DEBUG, false)
       .add('Part 1', PART1)
       .add('Part 2', PART2)
