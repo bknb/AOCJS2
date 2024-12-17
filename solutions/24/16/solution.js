@@ -1,12 +1,22 @@
 import {log, debug} from '#display';
-import {mapGrid, rng, next, mod, visGrid} from '#helper';
+import {mapGrid, rng, next, mod} from '#helper';
 import chalk from 'chalk';
 
+let distS, sp;
+
 export const part1 = ([s,e,g])=> {
+  distS = getDM([s],g);
+  return sp=getHeatGrid(distS,g)[e[0]][e[1]];
+};
+
+const getDM = (s,g) => {
   const ds = mapGrid(g,_=>rng(4).map(_=>Infinity));
-  set3D(ds,s,0);
   const vs = new Set();
-  const q = [s];
+  const q = [];
+  s.forEach(x=>{
+    q.push(x);
+    set3D(ds,x,0);
+  });
   let c;
   while (c=rmNearest(ds,q)) {
     const ns = nexts(c,g);
@@ -19,7 +29,7 @@ export const part1 = ([s,e,g])=> {
         q.push(n);
     });
   }
-  return getHeatGrid(ds,g)[e[0]][e[1]];
+  return ds;
 }
 
 const rmNearest = (ds,q) => {
@@ -62,9 +72,19 @@ const set3D = (grid, [x,y,z], val) =>
 const get3D = (grid, [x,y,z]) =>
   grid[x][y][z];
 
-export const part2 = (input) => {
-  // Write your code here
-  return null;
+export const part2 = ([s,e,g]) => {
+  if (!distS) part1([s,e,g]);
+  log('distS finished');
+  const distE = getDM([[...e,3]],g);
+  log('distE finished');
+  let sum = 0, all=[];
+  for (let i=distS.length;i-->0;)
+    for (let j=distS[0].length;j-->0;)
+      for (let k=distS[0][0].length;k-->0;) {
+        if (distS[i][j][k]+distE[i][j][mod(k+2,4)]==sp)
+          all.push([i,j,k]);
+      }
+  return new Set(all.map(([x,y])=>(x+','+y))).size;
 };
 
 export const init = (data) => {
