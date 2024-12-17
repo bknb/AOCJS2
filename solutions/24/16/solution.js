@@ -1,7 +1,5 @@
-import {log, debug} from '#display';
 import {mapGrid, rng, next,
         mod, insertSorted} from '#helper';
-import chalk from 'chalk';
 
 let distS, sp;
 
