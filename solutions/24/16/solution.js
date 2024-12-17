@@ -1,5 +1,5 @@
 import {log, debug} from '#display';
-import {mapGrid, rng, next, mod} from '#helper';
+import {mapGrid, rng, next, mod, insertSorted} from '#helper';
 import chalk from 'chalk';
 
 let distS, sp;
@@ -12,13 +12,13 @@ export const part1 = ([s,e,g])=> {
 const getDM = (s,g) => {
   const ds = mapGrid(g,_=>rng(4).map(_=>Infinity));
   const vs = new Set();
-  const q = [];
+  let q = [];
   s.forEach(x=>{
     q.push(x);
     set3D(ds,x,0);
   });
   let c;
-  while (c=rmNearest(ds,q)) {
+  while (c=q.pop()) {
     const ns = nexts(c,g);
     const cw = get3D(ds,c);
     ns.forEach(([n,nw])=> {
@@ -26,7 +26,7 @@ const getDM = (s,g) => {
       if (get3D(ds,n)>w) set3D(ds,n,w);
       vs.add(c.join(','));
       if (!vs.has(n.join(',')))
-        q.push(n);
+        q=insertSorted(q,n,(a,b)=>get3D(ds,a)-get3D(ds,b));
     });
   }
   return ds;
@@ -74,9 +74,7 @@ const get3D = (grid, [x,y,z]) =>
 
 export const part2 = ([s,e,g]) => {
   if (!distS) part1([s,e,g]);
-  log('distS finished');
-  const distE = getDM([[...e,3]],g);
-  log('distE finished');
+  const distE = getDM(rng(4).map(d=>[...e,d]),g);
   let sum = 0, all=[];
   for (let i=distS.length;i-->0;)
     for (let j=distS[0].length;j-->0;)
