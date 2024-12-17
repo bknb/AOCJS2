@@ -21,17 +21,6 @@ export const sumGrid = (grid) =>
 export const isXYInCoordinates = (i,j)=>
   cs=>cs.some(([x,y])=>x==i&&y==j);
 
-/**
- * Returns if given coordinates [i,j] are out
- * bounds of the given grid.
- * 
- * @param {number} x
- *   - x coordinate.
- * @param {number} y
- *   - y coordinate.
- * @param {number[][]} grid
- *   - The grid to check.
- */
 export const oob = (x,y,grid) =>
   grid[x]?.[y]===undefined;
 
@@ -49,16 +38,6 @@ export const bordered = (grid) =>
   (hr=>[hr,...grid.map(r=>['#',...r,'#']),hr])
   ('#'.repeat(grid[0].length+2).split(''));
 
-/**
- * Gets the the coordinate of the next coordinate
- * in a grid. Given a direction dir which means 0 for north
- * going to 7 north-west clockwise.
- * 
- * @param {number[]} c
- *   - The coordinate from which to start.
- * @param {number} dir
- *   - The direction to get the next coordinate from
- */
 export const getNext = (c,dir) => {
   switch(dir) {
     case 7: c[1]--; case 0: c[0]--; break;
@@ -69,17 +48,6 @@ export const getNext = (c,dir) => {
   return c;
 };
 
-/**
- * Gets the the coordinate of the next coordinate
- * in a grid. Given a direction dir which means 0 for north
- * going to 7 north-west clockwise.
- * 
- * @param {number[]} c
- *   - The coordinate from which to start.
- * @param {boolean} oa
- *   - (Only Axis) filters only axis directions for true and
- *     diagonals for true. 'undefined' (default) gives all directions.
- */
 export const allNext = (c=[0,0],oa) =>
   (dirs=>dirs.map(x=>getNext(c.slice(),x)))
   (rng(0,8).filter((_,i)=>i%2!=oa));

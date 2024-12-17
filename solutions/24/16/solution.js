@@ -1,135 +1,67 @@
-import {log} from '#display';
-import {allNext, oob} from '#helper';
+import {log, debug} from '#display';
+import {mapGrid, rng, next, mod, visGrid} from '#helper';
 import chalk from 'chalk';
 
-let grid;
-
 export const part1 = ([s,e,g])=> {
-  grid = g;
-  const es = net(s[0],e);
-  log(es);
-  shrinkEs(es,s[0].join(','),e.join(','));
-  log(es);
-  return getShortest(s,e,es,[]);
-}
-
-const shrinkEs = (es,s,e) => {
-  const rks = [], mks = new Map();
-  [...es.entries()].forEach(([k,v])=>{
-    if (k!=s&&k!=e) {
-      if (v.size==2 && ![...v.keys()].some(x=>mks.has(x)))
-        mks.set(k,[...v.entries()]);
-    }
-  });
-  [...mks.entries()].forEach(([k,[[a,av],[b,bv]]])=>{
-    es.delete(k);
-    const dist = av[0]+bv[0]+1000*(Math.abs(av[1]-bv[1])%2);
-    const [,ad] = es.get(a).get(k);
-    es.get(a).set(b,[dist,ad]).delete(k);
-    const [,bd] = es.get(b).get(k);
-    es.get(b).set(a,[dist,bd]).delete(k);
-  });
-  [...es.entries()].forEach(([k,v])=>{
-    if (k!=s&&k!=e) {
-      if (v.size<2)
-        rks.push([k,v.keys().next().value]);
-    }
-  });
-  rks.forEach(([s,d])=>es.delete(s)&&es.get(d).delete(s));
-  if (rks.length || mks.size) shrinkEs(es,s,e);
-}
-
-const getShortest = (s,e,es,p)=> {
-  const [c,od] = s;
-  const [ox,oy] = c;
-  if (ox == e[0] && oy == e[1]) return 0;
-  const np = [...p,c.join(',')];
-  const alts = [...es.get(c.join(',')).entries()]
-    .filter(([c])=>!np.includes(c))
-    .map(([n,[dist,dir]])=>
-      [n.split(',').map(x=>+x)
-       ,dist+1000*(dir!=od)])
-    .sort(([x],[y])=>heu(x,e)-heu(y,e));
-  return log(alts).reduce((a,[x,d])=>{
-      const inDir = es.get(x.join(',')).get(c.join(','))[1];
-      let shortest = d+getShortest([x,(inDir+2)%4],e,es,np);
-      return Math.min(a,shortest);
-    },Infinity);
-}
-
-const net = (s,e) => {
-  const es = new Map();
-  const ks = new Set();
+  const ds = mapGrid(g,_=>rng(4).map(_=>Infinity));
+  set3D(ds,s,0);
+  const vs = new Set();
+  set3D(ds,s,0);
   const q = [s];
-  while(q.length) {
-    const src = q.shift(),
-      srcS = src.join(',');
-    ks.add(srcS);
-    allNext(src,true)
-    .map((x,d)=>[x,d])
-    .filter(([[x,y]])=>
-      !oob(x,y,grid)&&!grid[x][y])
-    .map(x=>[getNext(x,e),x[1]])
-    .filter(([[dest]])=>dest&&
-      !ks.has(dest.join(',')))
-    .forEach(([[dest,dist,destDir],srcDir])=>{
-      const destS = dest.join(',');
-      if(!es.has(destS))
-        es.set(destS, new Map());
-      if(!es.has(srcS))
-        es.set(srcS, new Map());
-      es.get(srcS).set(destS, [1+dist,srcDir]);
-      es.get(destS).set(srcS, [1+dist,destDir]);
-      q.push(dest);
-    })
+  let c;
+  while (c=rmNearest(ds,q)) {
+    const ns = nexts(c,g);
+    const cw = get3D(ds,c);
+    ns.forEach(([n,nw])=> {
+      const w = cw+nw;
+      if (get3D(ds,n)>w) set3D(ds,n,w);
+      vs.add(c.join(','));
+      if (!vs.has(n.join(',')))
+        q.push(n);
+    });
   }
-  return es;
-} 
-
-const getNext = (s,e) => {
-  const [[ox,oy],od] = s;
-  const ns = allNext([ox,oy],true)
-    .map(([x,y],d)=>[[x,y],d])
-    .filter(([[x,y],d])=>
-      !oob(x,y,grid)&&
-      !grid[x][y]&&
-      ((d+2)%4)!=od);
-  if (ox != e[0] || oy != e[1]) {
-    if (ns.length==0) return [];
-    if (ns.length==1) {
-      const [[nx,ny],nd] = ns[0];
-      const [x,dist,dir] = getNext([[nx,ny],nd],e);
-      return x?[x,dist+1+1000*(nd!=od),dir]:[];
-    }
-  }
-  return [[ox,oy],0,(od+2)%4];
+  return getHeatGrid(ds,g)[e[0]][e[1]];
 }
 
-const opt = (s,e,path) => {
-  const [[ox,oy],od] = s;
-  if (ox == e[0] && oy == e[1]) return 0;
-  const nPath = path.concat([[ox,oy]]);
-  const ns = allNext([ox,oy],true)
-    .map(([x,y],d)=>[[x,y],d])
-    .filter(([[x,y]])=>!grid[x][y]
-      &&!nPath.some(([i,j])=>(i==x&&j==y)))
-    .map(([x,d])=>[x,d,heu(x,e)])
-    .sort(([,ad,a],[,bd,b])=>
-      ad==od?Infinity:(bd==od?-Infinity:a-b));
-  if (ns.length == 0) return Infinity;
-  let min = Infinity;
-  for (let [x,d] of ns) {
-    let score = opt([x,d],e,nPath);
-    if (d!=od) score += 1000;
-    if (score < min) min = score;
-  }
-  return min+1;
+const rmNearest = (ds,q) => {
+  if (!q.length) return;
+  const min = q.map(c=>get3D(ds,c)).reduce((a,c)=>Math.min(a,c));
+  return q.splice(q.findIndex(c=>get3D(ds,c)==min),1)[0];
 }
 
-const heu = ([sx,sy],[ex,ey]) => {
-  return Math.abs(sx-ex)
-    +Math.abs(sy-ey);
+const getHeatGrid = (ds,g)=> {
+  const heatGrid = mapGrid(ds,(d,i,j)=>
+    !g[i][j]&&d.reduce((a,c)=>Math.min(a,c)));
+  const max = heatGrid.reduce((a,c)=>
+    Math.max(a,c.reduce((b,d)=>
+      Math.max(b,d))),0);
+  debug(heatGrid.map(r=>r.map(c=>
+    c!==false?heat(c,max)('▒')
+    :'.').join('')).join('\n'));
+  return heatGrid;
 }
+
+const heat = (c,m,w=c/m) =>
+  chalk.rgb((255*w)|0,(255*(1-w))|0,0);
+
+const nexts = (k,g)=> {
+  const [,,d] = k;
+  const left = k.slice();
+  left[2] = mod(d-1,4);
+  const right = k.slice();
+  right[2] = mod(d+1,4);
+  const ns = [[left,1000],[right,1000]];
+  const [nx,ny] = next(k,true);
+  if (!g[nx][ny])
+    ns.push([[nx,ny,d],1]);
+  return ns;
+}
+
+const set3D = (grid, [x,y,z], val) =>
+  grid[x][y][z]=val;
+
+const get3D = (grid, [x,y,z]) =>
+  grid[x][y][z];
 
 export const part2 = (input) => {
   // Write your code here
@@ -140,7 +72,7 @@ export const init = (data) => {
   let s,e;
   const grid = data.split('\n')
     .map((r,x)=>r.split('').map((c,y)=>{
-      if (c == 'S') s = [[x,y],1];
+      if (c == 'S') s = [x,y,1];
       if (c == 'E') e = [x,y];
       return ~~(c == '#');
     }));
