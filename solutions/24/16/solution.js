@@ -1,5 +1,6 @@
 import {log, debug} from '#display';
-import {mapGrid, rng, next, mod, insertSorted} from '#helper';
+import {mapGrid, rng, next,
+        mod, insertSorted} from '#helper';
 import chalk from 'chalk';
 
 let distS, sp;
@@ -10,7 +11,8 @@ export const part1 = ([s,e,g])=> {
 };
 
 const getDM = (s,g) => {
-  const ds = mapGrid(g,_=>rng(4).map(_=>Infinity));
+  const ds = mapGrid(g,_=>
+    rng(4).map(_=>Infinity));
   const vs = new Set();
   let q = [];
   s.forEach(x=>{
@@ -26,16 +28,11 @@ const getDM = (s,g) => {
       if (get3D(ds,n)>w) set3D(ds,n,w);
       vs.add(c.join(','));
       if (!vs.has(n.join(',')))
-        q=insertSorted(q,n,(a,b)=>get3D(ds,a)-get3D(ds,b));
+        q=insertSorted(q,n,(a,b)=>
+          get3D(ds,a)-get3D(ds,b));
     });
   }
   return ds;
-}
-
-const rmNearest = (ds,q) => {
-  if (!q.length) return;
-  const min = q.map(c=>get3D(ds,c)).reduce((a,c)=>Math.min(a,c));
-  return q.splice(q.findIndex(c=>get3D(ds,c)==min),1)[0];
 }
 
 const getHeatGrid = (ds,g)=> {
