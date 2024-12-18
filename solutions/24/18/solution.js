@@ -1,5 +1,5 @@
 import {log} from '#display';
-import {rng, allNext, mapGrid,oob, insertSorted} from '#helper';
+import {rng, allNext, mapGrid,oob} from '#helper';
 import {isTest} from '#solver';
 
 let range;
@@ -55,6 +55,6 @@ export const part2 = (input) => {
 
 export const init = (data) => 
   (range=isTest()?7:71)&&
-  (bytes=isTest()?12:3024)&&
+  (bytes=isTest()?12:1024)&&
   data.split('\n').map(r=>
     r.split(',').map(x=>+x));
