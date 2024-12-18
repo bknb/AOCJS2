@@ -34,7 +34,7 @@ const getB = ([x,y])=>1n<<BigInt(y*range+x)
 export const part2 = (input) => {
   if (!map) map=rmBs(all,0,bytes,input);
   let i = 0;
-  do {map=rmBs(map,bytes+i,bytes+(++i),input)}
+  do map=rmBs(map,bytes+i,bytes+(++i),input)
     while (solve(map)!==Infinity);
   return input[bytes+i-1].join(',');
 };
