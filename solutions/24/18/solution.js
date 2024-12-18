@@ -1,12 +1,14 @@
 import {log} from '#display';
-import {rowBG,colBG} from '#helper';
+import {visBG,rowBG,colBG} from '#helper';
 import {isTest} from '#solver';
 
 let range, bytes;
-let left,right,up,all,s,e;
+let left,right,up,all,s,e,map;
 
-export const part1 = (input) => {
-  const map = rmBs(all,0,bytes,input);
+export const part1 = (input) => 
+  solve(map=rmBs(all,0,bytes,input));
+
+const solve = (map) => {
   let flood = s;
   let i = 0;
   let lastFlood;
@@ -20,7 +22,7 @@ export const part1 = (input) => {
     lastFlood = flood;
   }
   return i;
-};
+}
 
 const rmBs = (n,a,b,bs)=>{
   for (let i=a; i<b; i++)
@@ -30,8 +32,11 @@ const rmBs = (n,a,b,bs)=>{
 const getB = ([x,y])=>1n<<BigInt(y*range+x)
 
 export const part2 = (input) => {
-  while (++bytes&&part1(input)!==Infinity);
-  return input[bytes-1].join(',');
+  if (!map) map=rmBs(all,0,bytes,input);
+  let i = 0;
+  do {map=rmBs(map,bytes+i,bytes+(++i),input)}
+    while (solve(map)!==Infinity);
+  return input[bytes+i-1].join(',');
 };
 
 export const init = (data) => {
