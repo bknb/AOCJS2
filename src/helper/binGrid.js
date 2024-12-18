@@ -1,7 +1,7 @@
 import {uniqChars,rng} from '#helper';
 import {linify} from '#parser';
 
-export const colBG = (w,h)=> {
+export const colBG = (w,h=w)=> {
   let result = 1n;
   let bw = BigInt(w);
   for (let i=h; i-->0;)
@@ -9,12 +9,8 @@ export const colBG = (w,h)=> {
   return result;
 }
 
-export const rowBG = (w)=> {
-  let result = 1n;
-  for (let i=w; i-->0;)
-    result|=result<<1n;
-  return result;
-}
+export const rowBG = (w)=>
+  BigInt(2**w)-1n;
 
 export const toBG = (grid,c)=> {
   let result = 0n;
