@@ -53,10 +53,10 @@ export const solveOptions = (answer) => inquirer
     checkbox('options',answer)
       .message('What do you want?')
       .add('Test', TESTD)
-      .add('Input', INPUT, false)
-      .add('Debug', DEBUG, false)
       .add('Part 1', PART1)
       .add('Part 2', PART2)
+      .add('Input', INPUT, false)
+      .add('Debug', DEBUG, false)
       .add('verbose Errors', VERBOSE, false)
     ].map(x=>x()), answer);
 
