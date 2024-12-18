@@ -103,38 +103,11 @@ export const bg = (input) => {
   const spreadUD = (n)=>
     (n&wU)>>BigInt(w)|n<<BigInt(w);
 
-  const spreadLR = (n,wrap)=>
+  const spreadLR = (n)=>
     (n&wL)<<1n|(n&wR)>>1n;
-
-  const moveLeft = (n,m,wrap)=>
-    ((bm,rm,dm)=>
-      wrap==true
-      ?n//TODO
-      :(wrap==false
-        ?n//TODO
-        :n<<bm))(BigInt(m),m%w,(m/w)|0);
-
-  const moveUp = (n,m,wrap)=>
-    (bm=>wrap==true
-      ?(brm=>(brm&all)|(brm&(all<<bl))>>bl)
-      (n<<BigInt((m%h)*w))
-      :(wrap==false
-        ?(n<<bm)&all
-        :n<<bm))(BigInt(m*w),all<<bl);
-
-  const moveDown = (n,m,wrap)=>
-    (bm=>wrap==true
-    ?moveUp(n,h-m,true)
-    :n>>bm)(BigInt(m));
 
   const visL = n=>
     visBG(n,w,h);
-
-  const cNM = (n,m=w)=> rng(n,m)
-    .reduce(a=>a|col<<1n,col);
-
-  const rNM = (n,m=h)=> rng(n,m)
-    .reduce(a=>a|row<<bw,row);
 
   const toSingles = n=>
     toSingleBG(n,w,h);
