@@ -1,5 +1,5 @@
 import {log} from '#display';
-import {visBG,rowBG,colBG} from '#helper';
+import {rowBG,colBG} from '#helper';
 import {isTest} from '#solver';
 
 let range, bytes;
