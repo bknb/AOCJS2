@@ -7,7 +7,7 @@ const HEADER_PATH = 'src/assets/header.txt';
 
 let HEADER;
 if (fs.existsSync(HEADER_PATH))
-  HEADER = chalk.rgb(255,128,128).bold(
+  HEADER = chalk.rgb(200,100,100).bold(
     fs.readFileSync(HEADER_PATH, 'utf8'));
 
 startStep();
