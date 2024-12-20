@@ -7,6 +7,8 @@ export const count = (arr, f = x=>x) =>
 export const allBut = (arr, i) =>
   arr.filter((x,j)=>j!==i);
 
+export const eq = (a,b) =>a.every((_,i)=>a[i]==b[i]);
+
 export const sum = (arr) =>
   (typeof arr === 'object' ? arr : [...arguments])
     .reduce((a, c) => a + c, 0);

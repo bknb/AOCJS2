@@ -48,6 +48,9 @@ export const getNext = (c,dir) => {
   return c;
 };
 
+export const getG = (x,g)=>
+  x.reduce((a,c)=>a[c],g);
+
 export const allNext = (c=[0,0],oa) =>
   (dirs=>dirs.map(x=>getNext(c.slice(),x)))
   (rng(0,8).filter((_,i)=>i%2!=oa));
