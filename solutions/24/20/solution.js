@@ -23,11 +23,9 @@ const solve = (path,upTo)=>
   .flat().filter(x=>x>=threshold).length;
 
 const cheats = ([x,y],restPath,upTo)=>
-  restPath.map(([nx,ny],i)=> {
-    const gap = Math.abs(nx-x)+Math.abs(ny-y);
-    if (gap<=upTo) return i+1-gap;
-    return 0;
-  }).filter(x=>x);
+  restPath.map(([nx,ny],i)=>
+    ((gap=Math.abs(nx-x)+Math.abs(ny-y))=>
+      gap<=upTo?i+1-gap:0)()).filter(x=>x);
 
 const getPath = (path,end,grid)=> {
   let l,c,n;
