@@ -1,5 +1,5 @@
 import {log} from '#display';
-import {cached, getG} from '#helper';
+import {cached, getG, rng} from '#helper';
 
 const np=`
 789
@@ -13,8 +13,9 @@ const dp=`
 <v>`
 .split('\n').slice(1);
 
-const ps = [np,dp,dp];
+const ps = [np].concat(rng(2).map(_=>dp));
 
+const ps2 = [np].concat(rng(25).map(_=>dp))
 
 const dirs = {'^':[-1,0],'>':[0,1],'v':[1,0],'<':[0,-1],'A':[0,0]};
 
@@ -66,10 +67,10 @@ const getPosOf = (x,g)=> {
         return [i,j];
 }
 
-export const part2 = (input) => {
-  // Write your code here
-  return null;
-};
+export const part2 = (codes) =>
+  log(codes.map(x=>[cShortest(x,ps2),+x.substring(0,3)]))
+    .map(x=>x.reduce((a,c)=>a*c))
+    .reduce((a,c)=>a+c);
 
 export const init = data => 
   data.split('\n');
