@@ -46,7 +46,6 @@ const shortest=(c,ps)=>{
 const cShortest = cached(shortest);
 
 const isGapped = (x,n,p)=>{
-  //log(x[0],n,dirs[x[0]]);
   if (!x) return false;
   if (getG(n,p)=='.') return true;
   n = n.map((_,i)=>n[i]+dirs[x[0]][i]);
