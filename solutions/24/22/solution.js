@@ -7,7 +7,7 @@ const chg = [6,-5,11];
 
 export const part1 = (input) =>
   rng(iter).reduce((a,c)=>a.map(next),input)
-    .reduce((a,c)=>a+c);
+    .reduce((a,c)=>a+c)+'';
 
 const next = n => 
   chg.reduce((a,c)=>calc(a,c),n);
