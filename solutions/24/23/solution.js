@@ -1,7 +1,3 @@
-import {log} from '#display';
-import {allBut} from '#helper';
-import * as parser from '#parser';
-
 export const part1 = (input) => {
   const cs = new Map();
   input.forEach(([a,b])=>{
@@ -30,54 +26,21 @@ export const part2 = (input) => {
     if (cs.get(b)) cs.get(b).push(a);
     else cs.set(b,[a]);
   });
-  const ts = [...cs.keys()];
-  log(ts.length);
-  return biggest(ts,cs,new Set()).sort().join();
+  return biggest(cs);
 };
 
-const biggest = (ts,cs)=> {
+const biggest = cs=> {
   let pos = [...cs.entries().map(([k,v])=>[[k],v])];
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  pos = [...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]).filter(([c,r])=>r.length))].map(([k,v])=>[k.split(','),v]);
-  
-  pos = log([...new Map(pos.map(([c,r])=>r.map(x=>[[x,...c],r.filter(y=>y!=x)])).flat()
-  .map(([c,r])=>[c.sort().join(),r.filter(y=>
-    c.every(x=>cs.get(x).includes(y)))]))].map(([k,v])=>[k.split(','),v]));
+  while(pos.length!=1) {
+    pos = [...new Map(pos.map(([c,r])=>r.map(x=>
+      [[x,...c],r.filter(y=>y!=x)])).flat()
+      .map(([c,r])=>[c.sort().join(),r.filter(y=>
+      c.every(x=>cs.get(x).includes(y)))]))];
+    if (pos.length==1) break;
+    pos = pos.filter(([_,r])=>r.length).map(([k,v])=>[k.split(','),v]);
+  }
+  return pos[0][0];
 }
-
-const inter = (ts,cs) =>
-  ts.length?ts.slice(1).every(x=>cs.get(ts[0]).includes(x))&&inter(ts.slice(1),cs):true;
 
 export const init = (data) => 
   data.split('\n').map(r=>r.split('-'));
