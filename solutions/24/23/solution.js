@@ -1,14 +1,21 @@
-export const part1 = (input) => {
+export const part1 = (cs) => {
+  const ts = [...cs.keys().filter(([k])=>k.startsWith('t'))];
+  return new Set(ts.map(c=>ps(c,cs)).flat().map(x=>x.sort().join())).size;
+};
+
+export const part2 = (cs) => biggest(cs);
+
+export const init = (data) => {
   const cs = new Map();
-  input.forEach(([a,b])=>{
+  data.split('\n').map(r=>r.split('-'))
+  .forEach(([a,b])=>{
     if (cs.get(a)) cs.get(a).push(b);
     else cs.set(a,[b]);
     if (cs.get(b)) cs.get(b).push(a);
     else cs.set(b,[a]);
   });
-  const ts = [...cs.keys().filter(([k])=>k.startsWith('t'))];
-  return new Set(ts.map(c=>ps(c,cs)).flat().map(x=>x.sort().join())).size;
-};
+  return cs;
+}
 
 const ps = (c,cs)=> {
   const ns = cs.get(c);
@@ -18,20 +25,9 @@ const ps = (c,cs)=> {
   return pairs.filter(([a,b])=>cs.get(a).includes(b)).map(p=>[c,...p]);
 }
 
-export const part2 = (input) => {
-  const cs = new Map();
-  input.forEach(([a,b])=>{
-    if (cs.get(a)) cs.get(a).push(b);
-    else cs.set(a,[b]);
-    if (cs.get(b)) cs.get(b).push(a);
-    else cs.set(b,[a]);
-  });
-  return biggest(cs);
-};
-
 const biggest = cs=> {
   let pos = [...cs.entries().map(([k,v])=>[[k],v])];
-  while(pos.length!=1) {
+  while(true) {
     pos = [...new Map(pos.map(([c,r])=>r.map(x=>
       [[x,...c],r.filter(y=>y!=x)])).flat()
       .map(([c,r])=>[c.sort().join(),r.filter(y=>
@@ -41,6 +37,3 @@ const biggest = cs=> {
   }
   return pos[0][0];
 }
-
-export const init = (data) => 
-  data.split('\n').map(r=>r.split('-'));
