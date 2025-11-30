@@ -19,18 +19,17 @@ export const part2 = ([ws,gs]) => {
   swf('z',gs).map(x=>ev(x,wsc,gs));
   const zs = getN('z',wsc);
 
+  const lvl1 = [...involved].filter(isLvl1);
+  const lvl2 = gs.filter(([a,,b])=>lvl1.includes(a)&&lvl1.includes(b)).map(([,,,c])=>c);
+
+  log(gs.filter(([,,,c])=>c.startsWith('z')).sort(([,,,a],[,,,b])=>a>b?-1:1));
+
   const xss = xs.map(x=>~~x).join('');
   const yss = ys.map(x=>~~x).join('');
   const zss = zs.map(x=>~~x).join('');
   const ez = (Number('0b'+xss)+Number('0b'+yss)).toString(2);
-  const fi = zss.split('').map((x,i)=>x==ez[i]?-1:i).filter(x=>x!=-1);
-  involved = new Set();
-  swf('z',gs).filter((_,i)=>fi.includes(i)).map(x=>ev(x,new Map(ws),gs));
-  const fg = new Set(involved);
-  involved = new Set()
-  swf('z',gs).filter((_,i)=>!fi.includes(i)).map(x=>ev(x,new Map(ws),gs));
-  const tg = new Set(involved)
-  log(fg,tg,fg.difference(tg));
+  log(lvl1,lvl1.length);
+  log(lvl2,lvl2.length);
   log('  '+xss)
   log('+ '+yss)
   log('-'.repeat(47))
@@ -45,6 +44,8 @@ export const init = (data) => {
     gs.map(g=>g.match(/\w+/g))
   ];
 }
+
+const isLvl1 = a=>a.startsWith('x')||a.startsWith('y');
 
 const ev = ([a,op,b,c],ws,gs) => {
   if (!ws.has(a)) 
