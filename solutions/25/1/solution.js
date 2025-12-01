@@ -9,11 +9,11 @@ const ro = (isL,d,n,na=n%a) =>
 
 export const part1 = (input, d = s) => 
   input.reduce((c,[isL,n]) =>
-    ~~!(d = nd(isL,d,n)) + c, 0);
+    !(d = nd(isL,d,n)) + c, 0);
 
 export const part2 = (input, d = s) => 
   input.reduce((c,[isL,n]) =>
-    (~~!(d = nd(isL,d,n)) || ro(isL,d,n))
+    (!(d = nd(isL,d,n)) || ro(isL,d,n))
     + ~~(n/a) + c, 0);
 
 export const init = (data) => 
