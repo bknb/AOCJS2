@@ -1,11 +1,11 @@
 const a = 100;
 const s = 50;
 
+const mod = (n,m) => ((n % m) + m) % m;
 const nd = (isL,d,n) => 
   mod(isL ? d-n : d+n, a);
 const ro = (isL,d,n,na=n%a) => 
   isL ? na > a-d : na > d;
-const mod = (n,m) => ((n%m)+m)%m;
 
 export const part1 = (input, d = s) => 
   input.reduce((c,[isL,n]) =>
