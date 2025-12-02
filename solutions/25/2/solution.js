@@ -1,30 +1,18 @@
-import {log} from '#display';
-import {rng, sum} from '#helper';
-import * as parser from '#parser';
-
-const isInvalid = (n) => {
-  return /^(\d+)\1$/.test(`${n}`);
-}
-
-const isInvalid2 = (n) => {
-  return /^(\d+)\1+$/.test(`${n}`);
-}
-
-export const part1 = (input) => {
+const sumInvInRngs = (input, regex) => {
   let sum = 0;
   for(let i=input.length;i-->0;)
     for(let j=input[i][1]+1;j-->input[i][0];)
-      if(isInvalid(j)) sum += j;
+      if(regex.test(`${j}`))
+        sum += j;
   return sum;
-};
+}
 
-export const part2 = (input) => {
-  let sum = 0;
-  for(let i=input.length;i-->0;)
-    for(let j=input[i][1]+1;j-->input[i][0];)
-      if(isInvalid2(j)) sum += j;
-  return sum;
-};
+export const part1 = (input) => 
+  sumInvInRngs(input, /^(\d+)\1$/);
+
+export const part2 = (input) =>
+  sumInvInRngs(input, /^(\d+)\1+$/);
 
 export const init = (data) => 
-  data.split(',').map(l=>l.split('-').map(d=>+d));
+  data.split(',').map(l=>
+    l.split('-').map(d=>+d));
