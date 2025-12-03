@@ -1,22 +1,16 @@
-const a = 100;
-const s = 50;
+const f = 100, fl = Math.floor;
 
-const mod = (n,m) => ((n % m) + m) % m;
-const nd = (isL,d,n) => 
-  mod(isL ? d-n : d+n, a);
-const ro = (isL,d,n,na=n%a) => 
-  isL ? na > a-d : na > d;
+export const part1 = (input) =>
+  input.reduce((a,[,n]) => !(n%f)+a,0);
 
-export const part1 = (input, d = s) => 
-  input.reduce((c,[isL,n]) =>
-    !(d = nd(isL,d,n)) + c, 0);
+export const part2 = (input) =>
+  input.reduce((a,[s,e],i)=>
+    ((fs=fl(s/f),fe=fl(e/f),
+     os=!(s%f),oe=!(e%f))=>
+      (s>e?fs-fe+oe-os:fe-fs)+a)(),0);
 
-export const part2 = (input, d = s) => 
-  input.reduce((c,[isL,n]) =>
-    (!(d = nd(isL,d,n)) || ro(isL,d,n))
-    + ~~(n/a) + c, 0);
-
-export const init = (data) => 
+export const init = (data, d = 50) =>
   data.split('\n')
     .map(l=>l.match(/(L|R|\d+)/g))
-    .map(([d,n])=>[d==='L',+n]);
+    .map(([dir,n])=>((isL=dir==='L')=>
+      [d,d+=n*(isL?-1:1)])());

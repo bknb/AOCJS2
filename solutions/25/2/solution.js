@@ -7,12 +7,12 @@ const sumInvInRngs = (input, regex) => {
   return sum;
 }
 
-export const part1 = (input) => 
+export const part1 = (input) =>
   sumInvInRngs(input, /^(\d+)\1$/);
 
 export const part2 = (input) =>
   sumInvInRngs(input, /^(\d+)\1+$/);
 
-export const init = (data) => 
+export const init = (data) =>
   data.split(',').map(l=>
     l.split('-').map(d=>+d));
