@@ -1,19 +1,18 @@
-const mji = (b,n)=> {
-  const max = [];
-  for (let i=n;i-->0;) {
-    max.unshift(b.slice(0,b.length-i)
-      .reduce((a,c)=>c>a?c:a));
-    b = b.slice(b.indexOf(max[0])+1);
-  }
-  return +max.reverse().join('');
-}
+const m2i = (arr,i) =>
+  arr.slice(0,arr.length-i)
+    .reduce((a,c)=>c>a?c:a);
+const mji = (n) => (b) =>
+  +[...Array(n)].reduce(([m,r],_,i)=>
+    ((max=m2i(r,n-i-1))=>[
+        [...m,max],
+        r.slice(r.indexOf(max)+1)
+      ])(),[[],b])[0].join('');
 
 export const part1 = (input) =>
-  input.reduce((a,b)=>mji(b,2)+a,0);
+  input.map(mji(2)).reduce((a,c)=>a+c);
 
 export const part2 = (input) =>
-  input.reduce((a,b)=>mji(b,12)+a,0);
+  input.map(mji(12)).reduce((a,c)=>a+c);
 
 export const init = (data) =>
-  data.split('\n')
-    .map(r=>r.split('').map(d=>+d));
+  data.split('\n').map(r=>r.split(''));
