@@ -1,9 +1,9 @@
-const m2i = (arr,i) =>
-  arr.slice(0,arr.length-i)
+const max2i = (arr,i) =>
+  arr.slice(0,arr.length-i+1)
     .reduce((a,c)=>c>a?c:a);
 const mji = (n) => (b) =>
   +[...Array(n)].reduce(([m,r],_,i)=>
-    ((max=m2i(r,n-i-1))=>[
+    ((max=max2i(r,n-i))=>[
         [...m,max],
         r.slice(r.indexOf(max)+1)
       ])(),[[],b])[0].join('');
