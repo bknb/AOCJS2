@@ -1,6 +1,7 @@
 const max2i = (arr,i) =>
   arr.slice(0,arr.length-i+1)
     .reduce((a,c)=>c>a?c:a);
+
 const mji = (n) => (b) =>
   +[...Array(n)].reduce(([m,r],_,i)=>
     ((max=max2i(r,n-i))=>[
