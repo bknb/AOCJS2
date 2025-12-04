@@ -10,12 +10,12 @@ export const part1 = (input) =>
       t2+(c&&fa(i,j,input)),0)+t1,0);
 
 export const part2 = (input) => {
-  let c, t = 0;
-  do c=input.reduce((t1,r,i)=>
+  let cc, t = 0;
+  do cc=input.reduce((t1,r,i)=>
     r.reduce((t2,c,j)=>
       t2+(c&&fa(i,j,input)
       &&!(input[i][j]=false)),0)+t1,0);
-  while (c&&(t+=c));
+  while (cc&&(t+=cc));
   return t;
 }
 
