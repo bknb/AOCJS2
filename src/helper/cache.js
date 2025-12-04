@@ -1,3 +1,4 @@
+let cache;
 const getCachedFn = (cache,fn)=>
   (...input)=>
   ((key=input.join(','))=>
