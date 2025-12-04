@@ -31,6 +31,10 @@ export const input = (name) => {
     option.message = msg;
     return result;
   };
+  result.default = (value) => {
+    option.default = value;
+    return result;
+  };
   result.validate = (fn) => {
     option.validate = fn;
     return result;

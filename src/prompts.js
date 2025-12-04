@@ -36,9 +36,11 @@ export const createNew = () => inquirer
   .prompt([
     input('year')
       .message('Which year?')
+      .default(new Date().getYear()-100)
       .validate((n)=>/\d{2}/.test(n)),
     input('day')
       .message('Which day?')
+      .default(new Date().getDate())
       .validate((n)=>/\d{1,2}/.test(n))
     ].map(x=>x()));
 
