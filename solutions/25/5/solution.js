@@ -1,5 +1,6 @@
 export const part1 = ([rs,l]) => 
-  l.filter(n=>rs.some(([l,r])=>n>=l&&n<=r)).length
+  l.filter(n=>rs.some(([l,r])=>
+    n>=l&&n<=r)).length;
 
 export const part2 = ([rs]) => 
   rs.sort(([a],[b])=>a-b)
@@ -11,7 +12,8 @@ export const part2 = ([rs]) =>
 export const init = (data) => {
   const [rs,l] = data.split('\n\n');
   return [
-    rs.split('\n').map(r=>r.split('-').map(n=>+n)),
+    rs.split('\n')
+      .map(r=>r.split('-').map(n=>+n)),
     l.split('\n').map(n=>+n)
   ];
 }
