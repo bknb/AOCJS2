@@ -1,4 +1,4 @@
-import {toBG, everyCol} from '#helper';
+import {toBG, everyCol, transpose} from '#helper';
 
 export const linify = (input) =>
   input.split('\n');
@@ -48,7 +48,7 @@ export const seperate = (input, seperator = /^\s*$/) =>
   .reverse();
 
 export const blockify = (input, seperator = ' ') => {
-  const rows = lineWise(splitify())(input);
+  const rows = gridify(input);
   const end = rows?.[0].length;
   let lastSep = -1;
   const slice = (a,b) => r => r.slice(a,b);

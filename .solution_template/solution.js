@@ -1,4 +1,4 @@
-import {log} from '#display';
+import {debug, log} from '#display';
 import * as helper from '#helper';
 import * as parser from '#parser';
 
