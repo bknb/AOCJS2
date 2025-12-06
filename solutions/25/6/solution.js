@@ -1,5 +1,5 @@
 import {transpose, sum} from '#helper';
-import {sepH} from '#parser';
+import {blockify} from '#parser';
 
 const solve = f => bs =>
   sum(bs.map(([isP,ns])=>
@@ -13,5 +13,5 @@ export const part1 = solve();
 export const part2 = solve(transpose);
 
 export const init = data =>
-  sepH(data).map(b=>
+  blockify(data).map(b=>
     [b.pop()[0]=='+',b]);

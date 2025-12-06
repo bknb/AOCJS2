@@ -47,7 +47,7 @@ export const seperate = (input, seperator = /^\s*$/) =>
     seperator.test(c)?[[],a,...r]:[[...a,c],...r],[[]])
   .reverse();
 
-export const sepH = (input, seperator = ' ') => {
+export const blockify = (input, seperator = ' ') => {
   const rows = lineWise(splitify())(input);
   const end = rows?.[0].length;
   let lastSep = -1;
