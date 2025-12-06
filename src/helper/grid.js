@@ -24,9 +24,12 @@ export const isXYInCoordinates = (i,j)=>
 export const oob = (x,y,grid) =>
   grid[x]?.[y]===undefined;
 
+export const sg = (grid,x,y) =>
+  grid?.[x]?.[y];
+
 export const altGrid = (grid, x, y, v, c) =>
   (aGrid=>aGrid[x][y]=v&&aGrid)
-  (c?grid.map(x=>x.slice()):grid);
+  (c?copyGrid(grid):grid);
 
 export const zeroGrid = (grid) =>
   grid.map(x=>x.map(y=>0));
@@ -34,9 +37,9 @@ export const zeroGrid = (grid) =>
 export const copyGrid = (grid) =>
   grid.map(x=>x.slice());
 
-export const bordered = (grid) =>
-  (hr=>[hr,...grid.map(r=>['#',...r,'#']),hr])
-  ('#'.repeat(grid[0].length+2).split(''));
+export const bordered = (grid, c = '#') =>
+  (hr=>[hr,...grid.map(r=>[c,...r,c]),hr])
+  (c.repeat(grid[0].length+2).split(''));
 
 export const getNext = (c,dir) => {
   switch(dir) {
