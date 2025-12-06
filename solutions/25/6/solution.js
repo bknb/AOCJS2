@@ -1,18 +1,21 @@
 import {T, sum} from '#helper';
 import {sepH} from '#parser';
 
-const solve = (isP,ns) =>
-  ns.map(n=>+n.join(''))
+const calc = (isP,ns,f) =>
+  (f?f(ns):ns)
+    .map(n=>+n.join(''))
     .reduce((a,c)=>
       isP?a+c:a*c,isP?0:1);
 
-export const part1 = (bs) =>
+const solve = (bs,T) =>
   sum(bs.map(([isP,ns])=>
-    solve(isP,ns)));
+    calc(isP,ns,T)));
 
-export const part2 = (bs) =>
-  sum(bs.map(([isP,ns])=>
-    solve(isP,T(ns))));
+export const part1 = bs =>
+  solve(bs);
+
+export const part2 = bs =>
+  solve(bs,T);
 
 export const init = (data) =>
   sepH(data).map(b=>
