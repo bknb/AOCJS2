@@ -70,7 +70,7 @@ export const getStart = (input, dirMap='^ > v <') =>
       (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
       (dirMap.indexOf(c)),false),false);
 
-export const T = g => {
+export const transpose = g => {
   const ng = [];
     for (let i=0;i<g[0].length;i++) {
       let n = [];

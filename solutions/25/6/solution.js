@@ -1,4 +1,4 @@
-import {T, sum} from '#helper';
+import {transpose, sum} from '#helper';
 import {sepH} from '#parser';
 
 const calc = (isP,ns,f) =>
@@ -7,15 +7,15 @@ const calc = (isP,ns,f) =>
     .reduce((a,c)=>
       isP?a+c:a*c,isP?0:1);
 
-const solve = (bs,T) =>
+const solve = (bs,f) =>
   sum(bs.map(([isP,ns])=>
-    calc(isP,ns,T)));
+    calc(isP,ns,f)));
 
 export const part1 = bs =>
   solve(bs);
 
 export const part2 = bs =>
-  solve(bs,T);
+  solve(bs,transpose);
 
 export const init = (data) =>
   sepH(data).map(b=>
