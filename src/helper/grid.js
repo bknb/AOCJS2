@@ -70,8 +70,30 @@ export const getStart = (input, dirMap='^ > v <') =>
       (fi=>fi!=-1&&arr.splice(1)&&[i,j,fi])
       (dirMap.indexOf(c)),false),false);
 
+export const T = g => {
+  const ng = [];
+    for (let i=0;i<g[0].length;i++) {
+      let n = [];
+      for (let j=0;j<g.length;j++)
+        n.push(g[j][i]);
+      ng.push(n);
+    }
+    return ng;
+}
+
+export const someCol = (grid,j,f) => {
+  for (let i=grid.length;i-->0;)
+    if (f(grid[i][j])) return true;
+};
+
+export const everyCol = (grid,j,f) => {
+  for (let i=grid.length;i-->0;)
+    if (!f(grid[i][j])) return false;
+  return true;
+};
+
 export const visGrid = (map='.#')=>grid=>
-  grid.map(row=>gridRow(row,map)).join('\n')
+  grid.map(row=>gridRow(row,map)).join('\n');
 
 const gridRow = (row,map)=>
   row.map(x=>map[x|0]||'#').join('');

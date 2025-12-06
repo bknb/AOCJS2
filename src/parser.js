@@ -1,4 +1,4 @@
-import {toBG} from '#helper';
+import {toBG, everyCol} from '#helper';
 
 export const linify = (input) =>
   input.split('\n');
@@ -46,3 +46,18 @@ export const seperate = (input, seperator = /^\s*$/) =>
   linify(input).reduce(([[...a],...r],c)=>
     seperator.test(c)?[[],a,...r]:[[...a,c],...r],[[]])
   .reverse();
+
+export const sepH = (input, seperator = ' ') => {
+  const rows = lineWise(splitify())(input);
+  const end = rows?.[0].length;
+  let lastSep = -1;
+  const slice = (a,b) => r => r.slice(a,b);
+  const getChunk = i =>
+    rows.map(slice(lastSep+1,lastSep=i));
+  const result = [];
+  for (let i=0;i<end;i++)
+    if (everyCol(rows,i,e=>e===seperator))
+      result.push(getChunk(i));
+  result.push(getChunk(end));
+  return result;
+}
