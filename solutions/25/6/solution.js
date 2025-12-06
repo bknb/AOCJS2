@@ -1,15 +1,12 @@
 import {transpose, sum} from '#helper';
 import {sepH} from '#parser';
 
-const calc = (isP,ns,f) =>
-  (f?f(ns):ns)
-    .map(n=>+n.join(''))
-    .reduce((a,c)=>
-      isP?a+c:a*c,isP?0:1);
-
 const solve = (bs,f) =>
   sum(bs.map(([isP,ns])=>
-    calc(isP,ns,f)));
+    (f?f(ns):ns)
+      .map(n=>+n.join(''))
+      .reduce((a,c)=>
+        isP?a+c:a*c,isP?0:1)));
 
 export const part1 = bs =>
   solve(bs);
