@@ -14,7 +14,7 @@ export const part2 = ([s,g],l=g.length) =>
   ((solve=cached((i,j) => 
     i==l?1:(g[i][j]=='.'?solve(i+1,j)
       :solve(i+1,j-1)+solve(i+1,j+1)))) =>
-  solve(0,s))();
+    solve(0,s))();
 
 export const init = data => 
   (g=>[g.shift().indexOf('S'),g])
