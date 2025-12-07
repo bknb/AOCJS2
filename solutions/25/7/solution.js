@@ -2,14 +2,13 @@ import {debug, log, logGrid} from '#display';
 import {cached} from '#helper';
 import {gridify} from '#parser';
 
-export const part1 = (g) => {
+export const part1 = ([s,g]) => {
   let splits = 0;
-  const cs = new Set([g[0].indexOf('S')]);
-  log(cs);
-  g.slice(1).forEach(r=>
+  const cs = new Set([s]);
+  g.forEach(r=>
     r.forEach((c,i)=>{
       if(c==='^'&&cs.has(i)) {
-        splits++;
+        ++splits;
         cs.delete(i);
         cs.add(i+1).add(i-1);
       }
@@ -17,14 +16,15 @@ export const part1 = (g) => {
   return splits;
 };
 
-export const part2 = (g) => {
+export const part2 = ([s,g]) => {
   const solve = cached((i,j) => {
     if (i===g.length) return 1;
-    if (g[i][j]==='.') return solve(i+1,j,g);
-    if (g[i][j]==='^') return solve(i+1,j-1,g)+solve(i+1,j+1,g);
+    if (g[i][j]==='.') return solve(i+1,j);
+    if (g[i][j]==='^') return solve(i+1,j-1)+solve(i+1,j+1);
   });
-  return solve(1,g[0].indexOf('S'));
+  return solve(0,s);
 };
 
-export const init = (data) => 
-  (g=>g)(gridify(data));
+export const init = data => 
+  (g=>[g.shift().indexOf('S'),g])
+  (gridify(data));
