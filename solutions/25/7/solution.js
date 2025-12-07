@@ -12,7 +12,7 @@ export const part1 = ([s,g]) =>
 
 export const part2 = ([s,g]) =>
   ((l=g.length,solve=cached((i,j) =>
-    i===l?1: (g[i][j]==='^'
+    i===l ? 1 : (g[i][j]==='^'
       ?solve(i+1,j-1)+solve(i+1,j+1)
       :solve(i+1,j)))) =>
     solve(0,s))();
