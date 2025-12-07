@@ -10,16 +10,11 @@ export const part1 = ([s,g]) =>
         &&s+1)||s,0)+ts,0))
   (new Set([s]));
 
-export const part2 = ([s,g]) => {
-  const solve = cached((i,j) => {
-    switch(g?.[i]?.[j]) {
-      case '.': return solve(i+1,j);
-      case '^': return solve(i+1,j-1)+solve(i+1,j+1);
-      default: return 1;
-    }
-  });
-  return solve(0,s);
-};
+export const part2 = ([s,g],l=g.length) => 
+  ((solve=cached((i,j) => 
+    i==l?1:(g[i][j]=='.'?solve(i+1,j)
+      :solve(i+1,j-1)+solve(i+1,j+1)))) =>
+  solve(0,s))();
 
 export const init = data => 
   (g=>[g.shift().indexOf('S'),g])
