@@ -1,5 +1,5 @@
 export const vec = (...x) => {
-  let v = x;
+  const v = x;
   v.add = a=>
     vec(...v.map((x,i)=>x+a[i]));
   v.sub = a=>

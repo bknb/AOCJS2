@@ -7,33 +7,32 @@ import fs from 'fs';
 import chalk from 'chalk';
 
 const {bgRed: error} = chalk;
-let debugEnabled = false;
-let verboseError = false;
-let testEnabled = false;
 
 let [path, options] = process.argv.slice(2);
 options = options?.split(',')||[];
+let debugEnabled = options.includes(DEBUG);
+let verboseError = options.includes(VERBOSE);
+let testEnabled = options.includes(TESTD);
+let printInput = options.includes(INPUT);
+
 import(`../${path}/solution.js`)
   .then(handleSolution);
 
 function handleSolution(solution) {
   const { init } = solution;
   const [year, day] = path.match(/\d+/g);
-  testEnabled = options.includes(TESTD);
   
   let header = mainC(`Solutions(${year}-${day})`);
   if (testEnabled) header+=testC(' ~~Test');
   log(header);
 
-  debugEnabled = options.includes(DEBUG);
-  verboseError = options.includes(VERBOSE);
   const dataPath = `${path}/${testEnabled?'test':'input'}.txt`;
 
   const [data, loadTime] =
     timedExecution(fs.readFileSync, dataPath, 'utf8');
   const [input, prepTime] =
     timedExecution(init, data);
-  if (options.includes(INPUT))
+  if (printInput)
     log(inputC('Input:'), input);
   log(time1C(`loaded in ${loadTime}ms`));
   log(chalk.greenBright(`prepared in ${prepTime}ms`));
