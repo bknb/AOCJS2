@@ -1,6 +1,8 @@
 import {isTest} from '#solver';
 import {dist, remove} from '#helper';
 
+const cc = isTest()?10:1000;
+
 const getAllDist = jbs => {
   const ds = [];
   for (let i=jbs.length;i-->0;)
@@ -19,7 +21,7 @@ const connectNext = (jbcs,cs) => {
 };
 
 export const part1 = ([,jbcs,cs]) => {
-  for (let k=isTest()?10:1000;k-->0;) 
+  for (let k=cc;k-->0;) 
     connectNext(jbcs,cs);
   return cs.sort((a,b)=>b.size-a.size)
     .slice(0,3).reduce((a,c)=>a*c.size,1);
