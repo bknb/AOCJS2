@@ -1,7 +1,8 @@
-import {log, debug,
+import {log, rainbow,
         testC, mainC, highC,
-        time1C, time2C, inputC, rainbow} 
+        time1C, time2C, inputC} 
   from './display.js';
+import {timedExecution} from './helper.js';
 import {TESTD, DEBUG, VERBOSE, INPUT} from './prompts.js';
 import fs from 'fs';
 import chalk from 'chalk';
@@ -38,31 +39,27 @@ function handleSolution(solution) {
   log(chalk.greenBright(`prepared in ${prepTime}ms`));
 
   [1,2].filter(part=>options.includes(`part${part}`))
-    .forEach(part => {
-      process.stdout.write(highC(`\nSolution${part}: `));
+    .forEach(handlePart(solution, input));
+  log();
+}
+
+function handlePart(solution, input) {
+  return part => {
+    process.stdout.write(highC(`\nSolution${part}: `));
+    try {
       const [output, time] =
         timedExecution(solution[`part${part}`], input);
       log(output);
       log(time2C(`in ${time}ms`));
-    });
-  log();
-}
-
-function timedExecution(fn, ...args) {
-  const start = performance.now();
-  let result;
-  try{
-    result = fn(...args);
-  } catch({name,message,stack}){
-    let file = '';
-    const match = stack.match(/\(file:\/\/(.*)\)/);
-    if (match) [,file] = stack.match(/\(file:\/\/(.*)\)/);
-    result = verboseError ? '\n'+stack 
-      :`\n${error(name)}:\n${message}`
-      +`\nat ${rainbow(file.length/2)(file)}`;
+    } catch({name,message,stack}){
+      let file = '';
+      const match = stack.match(/\(file:\/\/(.*)\)/);
+      if (match) [,file] = stack.match(/\(file:\/\/(.*)\)/);
+      log(verboseError ? '\n'+stack 
+        :`\n${error(name)}:\n${message}`
+        +`\nat ${rainbow(file.length/2)(file)}`);
+    };
   };
-  const end = performance.now();
-  return [result, (end-start).toFixed(2)];
 }
 
 export const isDebug = () => debugEnabled;
