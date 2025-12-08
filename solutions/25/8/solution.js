@@ -37,6 +37,5 @@ export const init = (data) =>
     input,
     getAllDist(input),
     input.map((_,i)=>new Set([i]))
-  ])
-  (data.split('\n').map(r=>
+  ])(data.split('\n').map(r=>
     r.split(',').map(n=>+n)));
