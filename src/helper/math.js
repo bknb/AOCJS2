@@ -14,3 +14,7 @@ export const gcd = (a,b)=>
 
 export const mod = (a,b)=>
   ((a % b) + b) % b;
+
+export const dist = (a,b) => 
+    Math.sqrt(a.reduce((s,x,i)=>
+      s+Math.pow(x-b[i],2),0));

@@ -1,11 +1,5 @@
-import { isTest } from '#solver';
-
-const dist = (a,b) => {
-  let sum = 0;
-  for (let i=a.length;i-->0;)
-    sum+=Math.pow(a[i]-b[i],2);
-  return Math.sqrt(sum);
-}
+import {isTest} from '#solver';
+import {dist} from '#helper';
 
 const getAllDist = input => {
   const ds = [];
@@ -20,10 +14,8 @@ const connectNext = (all,js) => {
   let e1 = js.find(e=>e.has(i));
   let e2 = js.find(e=>e.has(j));
   if (e1!==e2) {
-    const n1 = js.indexOf(e1);
-    js.splice(n1,1);
-    const n2 = js.indexOf(e2);
-    js.splice(n2,1,e1.union(e2));
+    js.splice(js.indexOf(e1),1);
+    e1.forEach(e=>e2.add(e));
   }
   return [i,j];
 }
