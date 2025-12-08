@@ -1,43 +1,41 @@
 import {isTest} from '#solver';
-import {dist} from '#helper';
+import {dist, remove} from '#helper';
 
-const getAllDist = input => {
+const getAllDist = jbs => {
   const ds = [];
-  for (let i=input.length;i-->0;)
+  for (let i=jbs.length;i-->0;)
     for (let j=i;j-->0;)
-      ds.push([dist(input[i],input[j]),i,j]);
-  return ds;
-}
+      ds.push([dist(jbs[i],jbs[j]),i,j]);
+  return ds.sort(([a],[b])=>a-b);
+};
 
-const connectNext = (all,js) => {
-  const [,i,j] = all.shift();
-  let e1 = js.find(e=>e.has(i));
-  let e2 = js.find(e=>e.has(j));
-  if (e1!==e2) {
-    js.splice(js.indexOf(e1),1);
-    e1.forEach(e=>e2.add(e));
-  }
-  return [i,j];
-}
+const connectNext = (jbcs,cs) => {
+  const [,...i] = jbcs.shift();
+  const [e1,e2] = i.map(x=>
+    cs.find(e=>e.has(x)));
+  e1!==e2&&remove(cs,e1)
+    &&e1.forEach(e=>e2.add(e));
+  return i;
+};
 
-export const part1 = ([,all,js]) => {
+export const part1 = ([,jbcs,cs]) => {
   for (let k=isTest()?10:1000;k-->0;) 
-    connectNext(all,js);
-  return js.sort((a,b)=>b.size-a.size)
+    connectNext(jbcs,cs);
+  return cs.sort((a,b)=>b.size-a.size)
     .slice(0,3).reduce((a,c)=>a*c.size,1);
-}
+};
 
-export const part2 = ([input,all,js]) => {
+export const part2 = ([jbs,jbcs,cs]) => {
   let i,j;
-  while(js.length!==1)
-    [i,j] = connectNext(all,js);
-  return input[i][0]*input[j][0];
+  while(cs.length!==1)
+    [i,j] = connectNext(jbcs,cs);
+  return jbs[i][0]*jbs[j][0];
 };
 
 export const init = (data) =>
   (input=>[
     input,
-    getAllDist(input).sort(([a],[b])=>a-b),
+    getAllDist(input),
     input.map((_,i)=>new Set([i]))
   ])
   (data.split('\n').map(r=>

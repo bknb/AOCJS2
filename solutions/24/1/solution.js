@@ -1,5 +1,5 @@
 import {linify} from '#parser';
-import {insertSorted, sum} from '#helper';
+import {insert, sum} from '#helper';
 
 export const part1 = ([left, right]) =>
   sum(left.map((x, i) => Math.abs(right[i] - x)));
@@ -12,6 +12,6 @@ export const init = (data) =>
   linify(data)
     .map(line => line.split(/\s+/))
     .reduce(([left, right],[a,b]) => [
-      insertSorted(left, +a),
-      insertSorted(right, +b)
+      insert(left, +a),
+      insert(right, +b)
     ], [[], []]);

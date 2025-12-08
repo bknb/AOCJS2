@@ -1,5 +1,5 @@
 import {mapGrid, rng, next,
-        mod, insertSorted} from '#helper';
+        mod, insert} from '#helper';
 
 let distS, sp;
 
@@ -36,7 +36,7 @@ const getDM = (s,g) => {
   const ds = mapGrid(g,_=>
     rng(4).map(_=>Infinity));
   const vs = new Set();
-  let q = [];
+  const q = [];
   s.forEach(x=>{
     q.push(x);
     set3D(ds,x,0);
@@ -50,8 +50,8 @@ const getDM = (s,g) => {
       if (get3D(ds,n)>w) set3D(ds,n,w);
       vs.add(c.join(','));
       if (!vs.has(n.join(',')))
-        q=insertSorted(q,n,(a,b)=>
-          get3D(ds,a)-get3D(ds,b));
+        insert(q,n,(a,b)=>
+          get3D(ds,b)-get3D(ds,a));
     });
   }
   return ds;

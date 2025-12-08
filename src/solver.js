@@ -12,7 +12,7 @@ let verboseError = false;
 let testEnabled = false;
 
 let [path, options] = process.argv.slice(2);
-options = options.split(',');
+options = options?.split(',')||[];
 import(`../${path}/solution.js`)
   .then(handleSolution);
 
