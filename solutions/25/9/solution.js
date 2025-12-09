@@ -1,23 +1,23 @@
 import {allPairs, area, 
-        buckets, cmpRng} from '#helper';
+  buckets, cmpRng} from '#helper';
 
 const maxArea = pps =>
   pps.map(([b,c])=>area(b,c))
     .reduce((a,c)=>a>c?a:c);
 
-const cuts = (x1,x2,x3,y1,y2,y3,y4) => {
-  if (!cmpRng(x3,x1,x2)) {
-    const fxIn = cmpRng(y3,y1,y2);
-    const sxIn = cmpRng(y4,y1,y2);
-    return fxIn===0||fxIn!==sxIn;
+const cuts = (isX,...x) => {
+  const i=+!isX,j=+isX,
+    [x1,x2,x3,x4]=x;
+  if (!cmpRng(x3[i],x1[i],x2[i])) {
+    const x2c =
+      cmpRng(x3[j],x1[j],x2[j]);
+    return !x2c||x2c!==
+      cmpRng(x4[j],x1[j],x2[j]);
   }
 }
 
-const xx = ([x1,y1],[x2,y2])=>
-  ([[x3,y3],[x4,y4]])=>
-    x3===x4
-      ?cuts(x1,x2,x3,y1,y2,y3,y4)
-      :cuts(y1,y2,y3,x1,x2,x3,x4);
+const xx = (a,b)=>([c,d])=>
+    cuts(c[0]===d[0],a,b,c,d);
 
 export const part1 = input => 
   maxArea(input);
