@@ -1,7 +1,7 @@
 import {allPairs, area, inRng} from '#helper';
 
-const maxArea = jbs =>
-  Math.max(...jbs.map(([b,c])=>area(b,c)));
+const maxArea = pps =>
+  Math.max(...pps.map(([b,c])=>area(b,c)));
 
 const cuts = (x1,x2,x3,y1,y2,y3,y4) => {
   if (!inRng(x3,x1,x2)) {
