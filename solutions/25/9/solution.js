@@ -23,9 +23,8 @@ export const part1 = input =>
 export const part2 = input => {
   const xs=[],ys=[],cs=[];
   input.forEach(e=> {
-    const [[x1],[x2]]=e;
+    const [[x1,y1],[x2,y2]]=e;
     if (x1===x2) return xs.push(e);
-    const [[,y1],[,y2]]=e;
     if (y1===y2) return ys.push(e);
     cs.push(e);
   });
