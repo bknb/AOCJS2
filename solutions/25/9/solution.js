@@ -1,4 +1,5 @@
-import {allPairs, area, inRng} from '#helper';
+import {allPairs, area, 
+        buckets, inRng} from '#helper';
 
 const maxArea = pps =>
   Math.max(...pps.map(([b,c])=>area(b,c)));
@@ -11,26 +12,19 @@ const cuts = (x1,x2,x3,y1,y2,y3,y4) => {
   }
 }
 
-const xx = ([x1,y1],[x2,y2],[x3,y3],[,y4]) =>
-  cuts(x1,x2,x3,y1,y2,y3,y4);
-
-const xy = ([x1,y1],[x2,y2],[x3,y3],[x4]) =>
-  cuts(y1,y2,y3,x1,x2,x3,x4);
+const xx = ([x1,y1],[x2,y2])=>
+  ([[x3,y3],[x4,y4]]) =>
+    x3===x4?cuts(x1,x2,x3,y1,y2,y3,y4)
+      :cuts(y1,y2,y3,x1,x2,x3,x4);
 
 export const part1 = input => 
   maxArea(input);
 
 export const part2 = input => {
-  const xs=[],ys=[],cs=[];
-  input.forEach(e=> {
-    const [[x1,y1],[x2,y2]]=e;
-    if (x1===x2) return xs.push(e);
-    if (y1===y2) return ys.push(e);
-    cs.push(e);
-  });
+  const [cs,xs] = buckets(input,
+    ([[x1,y1],[x2,y2]])=>x1===x2||y1===y2);
   return maxArea(cs.filter(([a,b])=>
-    !xs.some(([c,d])=>xx(a,b,c,d))
-    && !ys.some(([c,d])=>xy(a,b,c,d))));
+    !xs.some(xx(a,b))));
 }
 
 export const init = data =>

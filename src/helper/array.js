@@ -24,6 +24,12 @@ export const allPerms = (arr, n) =>
     allPerms(arr.slice(i+1),n-1)
     .map(y=>[x,...y])).flat();
 
+export const buckets = (arr, cond) => {
+  const def = [], cf = [];
+  arr.forEach(e=>(cond(e)?cf:def).push(e));
+  return [def,cf];
+}
+
 export const sortedI = (arr, n, cmp=(a,b)=>a-b) => {
   let l=0,h=arr.length;
   while(l<h) {
