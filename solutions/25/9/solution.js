@@ -30,10 +30,9 @@ export const part2 = (input) => {
     if (y1===y2) return ys.push(e);
     cs.push(e);
   });
-  const av = cs.filter(([a,b])=>
+  return maxArea(cs.filter(([a,b])=>
     !xs.some(([c,d])=>xx(a,b,c,d))
-    && !ys.some(([c,d])=>xy(a,b,c,d)));
-  return maxArea(av);
+    && !ys.some(([c,d])=>xy(a,b,c,d))));
 }
 
 export const init = (data) =>
