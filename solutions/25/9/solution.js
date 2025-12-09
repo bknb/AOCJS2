@@ -4,7 +4,7 @@ import {allPairs} from '#helper';
 const dist = ([x1,y1],[x2,y2]) =>
   (Math.abs(x1-x2)+1)*(Math.abs(y1-y2)+1);
 
-const getAllDist = jbs =>
+const maxArea = jbs =>
   Math.max(...jbs.map(([b,c])=>dist(b,c)));
 
 const inRng = (x,x1,x2) => {
@@ -30,7 +30,7 @@ const xy = ([x1,y1],[x2,y2],[x3,y3],[x4]) => {
 };
 
 export const part1 = (input) => 
-  getAllDist(allPairs(input));
+  maxArea(allPairs(input));
 
 export const part2 = (input) => {
   const ac = allPairs(input);
@@ -45,7 +45,7 @@ export const part2 = (input) => {
   const av = cs.filter(([a,b])=>
     !xs.some(([c,d])=>xx(a,b,c,d))
     && !ys.some(([c,d])=>xy(a,b,c,d)));
-  return getAllDist(av);
+  return maxArea(av);
 }
 
 export const init = (data) =>
