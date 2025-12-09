@@ -17,13 +17,12 @@ const xx = ([x1,y1],[x2,y2],[x3,y3],[,y4]) =>
 const xy = ([x1,y1],[x2,y2],[x3,y3],[x4]) =>
   cuts(y1,y2,y3,x1,x2,x3,x4);
 
-export const part1 = (input) => 
-  maxArea(allPairs(input));
+export const part1 = input => 
+  maxArea(input);
 
-export const part2 = (input) => {
-  const ac = allPairs(input);
+export const part2 = input => {
   const xs=[],ys=[],cs=[];
-  ac.forEach(e=> {
+  input.forEach(e=> {
     const [[x1],[x2]]=e;
     if (x1===x2) return xs.push(e);
     const [[,y1],[,y2]]=e;
@@ -35,5 +34,6 @@ export const part2 = (input) => {
     && !ys.some(([c,d])=>xy(a,b,c,d))));
 }
 
-export const init = (data) =>
-  data.split('\n').map(r=>r.split(',').map(n=>+n));
+export const init = data =>
+  allPairs(data.split('\n').map(r=>
+    r.split(',').map(n=>+n)));
