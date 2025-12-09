@@ -18,3 +18,6 @@ export const mod = (a,b)=>
 export const dist = (a,b) => 
     Math.sqrt(a.reduce((s,x,i)=>
       s+Math.pow(x-b[i],2),0));
+
+export const area = ([x1,y1],[x2,y2]) =>
+  (Math.abs(x1-x2)+1)*(Math.abs(y1-y2)+1);

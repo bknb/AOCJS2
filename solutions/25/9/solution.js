@@ -1,33 +1,21 @@
-import {debug, log, condLog} from '#display';
-import {allPairs} from '#helper';
-
-const dist = ([x1,y1],[x2,y2]) =>
-  (Math.abs(x1-x2)+1)*(Math.abs(y1-y2)+1);
+import {allPairs, area, inRng} from '#helper';
 
 const maxArea = jbs =>
-  Math.max(...jbs.map(([b,c])=>dist(b,c)));
+  Math.max(...jbs.map(([b,c])=>area(b,c)));
 
-const inRng = (x,x1,x2) => {
-  if(x>x1) return x>=x2?1:0;
-  if(x<x1) return x<=x2?-1:0;
-  return x1>x2?1:-1;
-}
-
-const xx = ([x1,y1],[x2,y2],[x3,y3],[,y4]) => {
+const cuts = (x1,x2,x3,y1,y2,y3,y4) => {
   if (!inRng(x3,x1,x2)) {
     const fxIn = inRng(y3,y1,y2);
     const sxIn = inRng(y4,y1,y2);
     return fxIn===0||fxIn!==sxIn;
   }
-};
+}
 
-const xy = ([x1,y1],[x2,y2],[x3,y3],[x4]) => {
-  if (!inRng(y3,y1,y2)) {
-    const fxIn = inRng(x3,x1,x2);
-    const sxIn = inRng(x4,x1,x2);
-    return fxIn===0||fxIn!==sxIn;
-  }
-};
+const xx = ([x1,y1],[x2,y2],[x3,y3],[,y4]) =>
+  cuts(x1,x2,x3,y1,y2,y3,y4);
+
+const xy = ([x1,y1],[x2,y2],[x3,y3],[x4]) =>
+  cuts(y1,y2,y3,x1,x2,x3,x4);
 
 export const part1 = (input) => 
   maxArea(allPairs(input));

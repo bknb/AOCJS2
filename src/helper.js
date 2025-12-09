@@ -6,3 +6,4 @@ export * from './helper/math.js';
 export * from './helper/binGrid.js';
 export * from './helper/cache.js';
 export * from './helper/runtime.js';
+export * from './helper/range.js';
