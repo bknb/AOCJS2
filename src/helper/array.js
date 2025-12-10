@@ -16,13 +16,19 @@ export const sum = (arr) =>
 export const allPairs = (arr) =>
   arr.map((x,i)=>arr.slice(i+1).map(y=>[x,y])).flat();
 
-export const revCopy = (arr) => arr.slice().reverse()
+export const revCopy = (arr) => arr.slice().reverse();
 
 export const allPerms = (arr, n) =>
   n==2?allPairs(arr)
   :arr.map((x,i)=>
     allPerms(arr.slice(i+1),n-1)
     .map(y=>[x,...y])).flat();
+
+export const buckets = (arr, cond) => {
+  const def = [], cf = [];
+  arr.forEach((e,i)=>(cond(e,i)?cf:def).push(e));
+  return [def,cf];
+}
 
 export const sortedI = (arr, n, cmp=(a,b)=>a-b) => {
   let l=0,h=arr.length;
