@@ -1,10 +1,9 @@
 import {debug, log} from '#display';
-import {insert, rng} from '#helper';
+import {insert, countB,rng} from '#helper';
 import * as parser from '#parser';
 
 const cmp = ([a,,cda],[b,,cdb])=>
   a+cda.length-(b+cdb.length);
-const cmp2 = ([a],[b])=>a-b;
 
 const fp = ([ls,w,bl])=>{
   const bs = bl.map(bl2b)
@@ -32,74 +31,53 @@ const fp = ([ls,w,bl])=>{
   return min;
 }
 
-const fp2 = ([,,bl,tc])=>{
-  bl.sort((a,b)=>b.length-a.length);
-  const zc = tc.map(()=>0);
-  const q = [[dist2(tc,zc),zc,0]];
-  let min = Infinity;
-  let n;
-  let i=500;
-  while((n=q.shift())) {
-    //log(q.slice(0,2));
-    const [td,s,d] = n;
-    if(!td) {if(d<min)min=d;}
-    else {
-      bl.forEach(bs=>{
-        let max = bs.map(i=>tc[i]-s[i])
-          .reduce((a,c)=>a>c?a:c);
-        //log(max,bs,tc,s);
-        for (let j=max+1;j-->1;) {
-          const ns = [...s];
-          bs.forEach(i=>ns[i]+=j);
-          const e = q.find(([,os])=>
-            ns.every((c,i)=>c===os[i]));
-          const ncd = d+j;
-          if(e) {
-            if(e[2].length>ncd)
-              e[2]=ncd;
-          } else {
-            const nd = dist2(tc,ns);
-            if(nd+ncd>min) continue;
-            insert(q,[nd,ns,ncd],cmp2);
-          }
-        }
-      });
-    }
-  }
-  return min;
-}
-
 const fp3 = ([,,bl,tc])=>{
   const cmb =tc.map((c,i)=>[c,bl.map((b,i)=>
     [b,i]).filter(([b])=>
-      b.includes(i)).map(([,i])=>i)])
-    .sort(([,a],[,b])=>a.length-b.length);
-  log(ap(cmb[0]),cmb[0]);
-  return 0;
+      b.includes(i)).map(([,i])=>i)]);
+  return mp(cmb);
 }
 
-const ap = ([c,bts])=> {
-  if (bts.length===1) return [c];
-  if(!c) return [bts.map(()=>0)];
-  return rng(c).reduce((a,i)=>a.concat(ap([c-i,bts.slice(1)])),[]);
+const mp=cmb=>{
+  if(cmb.some(([c])=>c<0))
+    return Infinity;
+  if(!cmb.length)
+    return 0;
+  cmb.sort(([an,a],[bn,b])=>
+    (a.length-b.length)||an-bn);
+  const [c,bs]=cmb[0];
+  const [i,...ri] = bs;
+  if(i===undefined)
+    return c?Infinity:mp(cmb.slice(1));
+  let simp = false;
+  cmb = cmb.map(([cc,bts],i)=>{
+    if(i&&bs.every(e=>bts.includes(e))) {
+      simp = true;
+      return [cc-c,bts.filter(e=>
+        !bs.includes(e))];
+    }
+    return [cc,bts];
+  });
+  if (simp) return mp(cmb);
+  if(!ri.length)
+    return c+mp(cmb.slice(1));
+  const max = Math.min(...cmb.filter(([,bts])=>
+    bts.includes(i)).map(([n])=>n));
+  return rng(max+1).reduce((a,cc)=>{
+    const ncmb = rdc(cmb,cc,i);
+    const ps = cc+mp(ncmb);
+    return ps<a?ps:a;
+  },Infinity);
 }
 
-const dist = (l1,l2,w)=>count(l1^l2,w);
-const dist2 = (tc,cc)=>
-  tc.reduce((a,c,i)=>{
-    const add = c-cc[i];
-    if (add<0) return Infinity;
-    return a+add;
-  },0);
+const rdc = (cmb,n,i)=>
+  cmb.map(([c,bts])=>
+    bts.includes(i)
+    ?[c-n,bts.filter(j=>i!==j)]
+    :[c,bts]);
 
-const n2b = (w,n)=>n.toString(2).padStart(w, '0');
-
-const count = (n,w) => {
-  let result = 0;
-  for (let i=w;i-->0;n>>=1)
-    result+=n&1;
-  return result;
-}
+const dist = (l1,l2,w)=>
+  countB(l1^l2,w);
 
 export const bl2b = bl=>
   bl.reduce((a,c)=>a^=1<<c,0);
@@ -110,7 +88,7 @@ export const nl2bl = nl=>
 export const part1 = (input) =>
   input.reduce((a,c)=>fp(c)+a,0);
 
-export const part2 = (input) => 
+export const part2 = (input) =>
   input.reduce((a,c)=>fp3(c)+a,0);
 
 export const init = (data) => 
