@@ -1,10 +1,10 @@
 const sumInvInRngs = (input, regex) => {
-  let sum = 0;
+  let s = 0;
   for(let i=input.length;i-->0;)
     for(let j=input[i][1]+1;j-->input[i][0];)
       if(regex.test(`${j}`))
-        sum += j;
-  return sum;
+        s += j;
+  return s;
 }
 
 export const part1 = (input) =>

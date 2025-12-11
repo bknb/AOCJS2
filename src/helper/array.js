@@ -9,9 +9,15 @@ export const allBut = (arr, i) =>
 
 export const eq = (a,b) =>a.every((_,i)=>a[i]==b[i]);
 
-export const sum = (arr) =>
-  (typeof arr === 'object' ? arr : [...arguments])
-    .reduce((a, c) => a + c, 0);
+export const sum = arr =>
+  arr.reduce((a, c) => a + c, 0);
+
+export const fsum = f=>arr=>sum(arr.map(f));
+
+export const min = arr =>
+  arr.reduce((a, c) => a<c?a:c, Infinity);
+
+export const fmin = f=>arr=>min(arr.map(f));
 
 export const allPairs = (arr) =>
   arr.map((x,i)=>arr.slice(i+1).map(y=>[x,y])).flat();

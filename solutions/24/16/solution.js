@@ -12,7 +12,7 @@ export const part1 = ([s,e,g])=> {
 export const part2 = ([s,e,g]) => {
   if (!distS) part1([s,e,g]);
   const distE = getDM(rng(4).map(d=>[...e,d]),g);
-  let sum = 0, all=[];
+  let all=[];
   for (let i=distS.length;i-->0;)
     for (let j=distS[0].length;j-->0;)
       for (let k=distS[0][0].length;k-->0;)

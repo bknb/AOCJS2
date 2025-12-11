@@ -1,4 +1,3 @@
-import {debug, log} from '#display';
 import { isTest } from '#solver';
 
 const si = isTest()?1:0;
@@ -9,9 +8,9 @@ const run=(cs,cp,n,g,c)=>{
   if(c.has(h)) return c.get(h);
   if(n===g) return c.set(h,1)&&1;
   const result = cs.find(([s])=>s===n)
-    ?.[1].reduce((sum,nn)=>
-      cp.includes(nn)?sum:
-    sum+run(cs,[n,...cp],nn,g,c),0)||0;
+    ?.[1].reduce((s,nn)=>
+      cp.includes(nn)?s:
+    s+run(cs,[n,...cp],nn,g,c),0)||0;
   return c.set(h,result)&&result;
 }
 

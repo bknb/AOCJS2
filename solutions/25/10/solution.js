@@ -1,11 +1,11 @@
-import {debug, log} from '#display';
-import {insert, countB,rng} from '#helper';
-import * as parser from '#parser';
+import {debug} from '#display';
+import {insert,countB,fmin
+  ,rng,fsum} from '#helper';
 
 const cmp = ([a,,cda],[b,,cdb])=>
   a+cda.length-(b+cdb.length);
 
-const fp = ([ls,w,bl])=>{
+const mpl = ([ls,w,bl])=>{
   const bs = bl.map(bl2b)
   const q = [[dist(ls,0,w),0,[]]];
   let min = Infinity;
@@ -28,46 +28,36 @@ const fp = ([ls,w,bl])=>{
       });
     }
   }
-  return min;
-}
+  return debug(min);
+};
 
-const fp3 = ([,,bl,tc])=>{
-  const cmb =tc.map((c,i)=>[c,bl.map((b,i)=>
-    [b,i]).filter(([b])=>
-      b.includes(i)).map(([,i])=>i)]);
-  return mp(cmb);
-}
+const mpj = ([,,bl,tc])=>
+  debug(mp(tc.map((c,i)=>
+    [c,bl.map((b,i)=>
+      [b,i]).filter(([b])=>
+        b.includes(i)).map(([,i])=>i)])));
 
 const mp=cmb=>{
   if(cmb.some(([c])=>c<0))
     return Infinity;
-  if(!cmb.length)
-    return 0;
+  if(!cmb.length) return 0;
   cmb.sort(([an,a],[bn,b])=>
     (a.length-b.length)||an-bn);
-  const [c,bs]=cmb[0];
+  const [fc,...rc] = cmb
+  const [c,bs]=fc;
   const [i,...ri] = bs;
   if(i===undefined)
-    return c?Infinity:mp(cmb.slice(1));
+    return c?Infinity:mp(rc);
   let simp = false;
-  cmb = cmb.map(([cc,bts],i)=>{
-    if(i&&bs.every(e=>bts.includes(e))) {
-      simp = true;
-      return [cc-c,bts.filter(e=>
-        !bs.includes(e))];
-    }
-    return [cc,bts];
-  });
-  if (simp) return mp(cmb);
-  if(!ri.length)
-    return c+mp(cmb.slice(1));
-  const max = Math.min(...cmb.filter(([,bts])=>
-    bts.includes(i)).map(([n])=>n));
-  return rng(max+1).reduce((a,cc)=>{
-    const ncmb = rdc(cmb,cc,i);
-    const ps = cc+mp(ncmb);
-    return ps<a?ps:a;
-  },Infinity);
+  cmb = [fc,...rc.map(([cc,bts])=>
+    bs.every(e=>bts.includes(e))
+      ?simp=true&&[cc-c,bts.filter(e=>
+        !bs.includes(e))]
+      :[cc,bts])];
+  if(simp) return mp(cmb);
+  if(!ri.length) return c+mp(rc);
+  return fmin(cc=>cc+
+    mp(rdc(cmb,cc,i)))(rng(c+1));
 }
 
 const rdc = (cmb,n,i)=>
@@ -79,17 +69,15 @@ const rdc = (cmb,n,i)=>
 const dist = (l1,l2,w)=>
   countB(l1^l2,w);
 
-export const bl2b = bl=>
+const bl2b = bl=>
   bl.reduce((a,c)=>a^=1<<c,0);
 
-export const nl2bl = nl=>
+const nl2bl = nl=>
   nl.reduce((a,c,i)=>a^=c&&1<<i,0);
 
-export const part1 = (input) =>
-  input.reduce((a,c)=>fp(c)+a,0);
+export const part1 = fsum(mpl);
 
-export const part2 = (input) =>
-  input.reduce((a,c)=>fp3(c)+a,0);
+export const part2 = fsum(mpj);
 
 export const init = (data) => 
   data.split('\n').map(r=>r.split(' '))
