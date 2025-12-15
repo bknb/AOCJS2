@@ -12,13 +12,17 @@ export const colBG = (w,h=w)=> {
 export const rowBG = (w)=>
   BigInt(2**w)-1n;
 
-export const toBG = (grid,c)=> {
+export const toBG = (grid,c,w)=> {
   let result = 0n;
-  for (let i=grid.length;i-->0;)
-    for (let j=grid[0].length;j-->0;)
+  const gw = grid[0].length;
+  const dw = BigInt(w-gw);
+  for (let i=grid.length;i-->0;) {
+    if(w)result<<=dw;
+    for (let j=gw;j-->0;)
       result=(result<<1n)
         |BigInt((v=>c?v==c:!!v)
                 (grid[i][j]));
+  }
   return result;
 }
 
@@ -32,13 +36,8 @@ export const visBG = (n,w,h=w,m='.#')=> {
   return result;
 }
 
-export const allBG = (w,h=w) => {
-  let result = 1n;
-  for (let i=h;i-->0;)
-    for (let j=w;j-->0;)
-      result|=result<<1n;
-  return result;
-}
+export const allBG = (w,h=w) =>
+  (1n<<BigInt(w*h+1))-1n;
 
 export const toSingleBG = (n,w,h=w)=> {
   let result = [];
@@ -113,4 +112,3 @@ export const bg = (input) => {
 
   return {chars,bgs,visL,spread,toSingles,count};
 }
-  

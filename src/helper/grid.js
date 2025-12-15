@@ -21,11 +21,32 @@ export const sumGrid = (grid) =>
 export const isXYInCoordinates = (i,j)=>
   cs=>cs.some(([x,y])=>x==i&&y==j);
 
+export const eqGrid = (g,h)=>
+  g.every((r,i)=>r.every((c,j)=>c===h[i][j]));
+
 export const oob = (x,y,grid) =>
   grid[x]?.[y]===undefined;
 
 export const sg = (grid,x,y) =>
   grid?.[x]?.[y];
+
+export const rotG=s=> {
+  const ns = [];
+  for(let j=0;j<s[0].length;j++) {
+    const row=[];
+    for(let i=s.length;i-->0;)
+      row.push(s[i][j]);
+    ns.push(row);
+  }
+  return ns;
+}
+
+export const flpG=s=> {
+  const ns = [];
+  for (let i=s.length;i-->0;)
+    ns.push([...s[i]]);
+  return ns;
+}
 
 export const altGrid = (grid, x, y, v, c) =>
   (aGrid=>aGrid[x][y]=v&&aGrid)

@@ -1,40 +1,69 @@
-import {debug, log} from '#display';
-import {visGrid,rng,fsum} from '#helper';
+import {debug, log, condLog} from '#display';
+import {visBG,toBG,eqGrid,moveBG,rotG,flpG} from '#helper';
 import * as parser from '#parser';
 
-const vg = visGrid();
+const u = undefined;
 
-const r90=s=> {
-  const ns = [];
-  for(let j=0;j<s[0].length;j++) {
-    const row=[];
-    for(let i=s.length;i-->0;)
-      row.push(s[i][j]);
-    ns.push(row);
+const gcs = (ss,mw)=>{
+
+}
+
+const gv=s=>{
+  const as = [s];
+  for (let i=3;i-->0;) {
+    s=rotG(s);
+    if(!as.some(os=>eqGrid(os,s)))
+      as.push(s);
   }
-  return ns;
+  s=flpG(s);
+  if(as.some(os=>eqGrid(os,s)))
+    return as;
+  as.forEach(s=>as.push(flpG(s)));
+  return as;
 }
 
-const n0r=(w,h)=>
-  [...Array(h)].map(()=>
-    [...Array(w)].map(c=>false));
-
-const fits=ss=>([w,h,scs])=>{
-  return true;
+const fits=([w,h,scs],ss)=>{
+  const rss =ss.map((sg,n) =>
+    scs[n]&&[scs[n],sg.map(s=>{
+      const bgs = toBG(s,u,w);
+      const siap = [];
+      for (let i=h-2;i-->0;)
+        for(let j=w-2;j-->0;)
+          siap.push(moveBG(bgs,[i,j],w));
+      return siap;
+    })]).filter(sg=>sg)
+    .map(([n,sg])=>
+      [...Array(n)].map(()=>
+        sg.flat())).flat();
+  return fr(0n,rss);
 }
 
-const pn=(r,s)=>{
-  let f=false;
-  for(let i=r.length;i-->3;)
-    for(let j=r[i].length;j-->3;)
-      for(let k=4;i-->0;)
-        for(let n=3;n-->0;)
-          for(let m=3;m-->0;)
-            break;
+const fits2=([w,h,scs],ss)=>{
+  const rss =ss.map((sg,n) =>
+    [[n],sg.map(s=>{
+      const bgs = toBG(s,u,w);
+      const siap = [];
+      for (let i=h-2;i-->0;)
+        for(let j=w-2;j-->0;)
+          siap.push(moveBG(bgs,[i,j],w));
+      return siap;
+    })]).map(([n,sg])=>
+      [...Array(n)].map(()=>
+        sg.flat())).flat();
 }
 
-export const part1 = 
-  ([cs,ss])=>fsum(fits(ss))(cs);
+const ap = 
+
+const fr = (r,[fsg,...rsg]) => {
+  if (!fsg) return true;
+  for(let i=fsg.length;i-->0;)
+    if(!(r&fsg[i]))
+      if(fr(r|fsg[i],rsg))
+        return true;
+}
+
+export const part1 = ([cs,ss])=>
+  cs.reduce((a,c)=>a+log(!!fits(c,ss),a),0);
 
 export const part2 = (input) => {
   // Write your code here
@@ -48,6 +77,7 @@ export const init = (data) => {
     .map(([w,h,...cs])=>[w,h,cs]);
   const ss = ps.map(s=>s.split('\n')
     .slice(1).map(r=>
-      r.split('').map(c=>c==='#')));
+      r.split('').map(c=>c==='#')))
+    .map(s=>gv(s,3));
   return [cs,ss];
 };
